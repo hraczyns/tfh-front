@@ -6,10 +6,20 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
+    "leaflet": "^1.7.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-html-parser": "^2.0.2",
+    "react-leaflet": "^3.2.1",
+    "react-route": "^1.0.3",
     "react-scripts": "4.0.3",
+    "react-table": "^7.7.0",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^2.0.3",
     "web-vitals": "^1.1.2"
+  },
+  "resolutions": {
+    "react-leaflet/@react-leaflet/core": "1.0.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -23,16 +33,12 @@
       "react-app/jest"
     ]
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ],
+  "devDependencies": {
+    "react-router-dom": "^5.2.0"
   }
 }

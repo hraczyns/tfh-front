@@ -1,0 +1,126 @@
+.findresultshome {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+    position: relative;
+}
+
+.findresultshome::before {
+    position: absolute;
+    content: '';
+    z-index: -2;
+    height: 100vh;
+    width: 100%;
+}
+
+.findresultshome__bg-gradient {
+    position: absolute;
+    height: 700px;
+    width: 95%;
+    bottom: 0;
+    z-index: -1;
+}
+
+.findresultshome__content {
+    width: 100%;
+}
+
+.findresultshome__summary {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 80px auto;
+    font-size: 60px;
+    font-family: 'Barlow Condensed', sans-serif;
+}
+
+.findresultshome__summary-cities {
+    color: #2196f3;
+    font-size: 76px;
+}
+
+.findresultshome__picker {
+    box-shadow: 0 0 3px 3px black;
+    position: fixed;
+    left: 70%;
+    top: 0;
+    z-index: 2;
+    height: 100vh;
+    width: 30%;
+    background-color: #1385e0;
+    float: right;
+    overflow: hidden scroll;
+    font-family: 'Barlow Condensed', sans-serif;
+
+
+}
+
+.findresultshome__picker > header {
+    color: #eeeeee;
+    font-size: 60px;
+    margin: 100px auto;
+    max-width: 230px;
+}
+
+.findresultshome__details {
+    margin-bottom: 30px;
+    color: #eeeeee;
+    font-size: 32px;
+}
+
+.findresultshome__details .findresultshome__details-element {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+}
+
+.findresultshome__details {
+    border-bottom: 1px solid #eeeeee;
+}
+
+.findresultshome__details:nth-last-child(3) {
+    border-bottom: none;
+}
+
+.findresultshome__details > :not(.findresultshome__details-element:last-child) {
+    margin: 0 20px 20px;
+}
+
+.findresultshome__details-element:first-child {
+    font-size: 48px;
+}
+
+.findresultshome__price-summary {
+    margin: 70px 20px 60px;
+    font-size: 50px;
+    text-transform: uppercase;
+    color: #eee;
+    display: flex;
+    justify-content: space-between;
+}
+
+.findresultshome__reserve-btn-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.findresultshome__reserve-btn {
+    padding: 5px 40px;
+    width: 170px;
+    margin: 0 30px 30px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 40px;
+    border: 1px solid #eee;
+    border-radius: 15px;
+    background-color: #eee;
+    transform: scale(1);
+    transition: all 0.4s;
+}
+
+.findresultshome__reserve-btn:hover {
+    transform: scale(1.1);
+    background-color: #bbb;
+}

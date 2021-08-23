@@ -1,0 +1,57 @@
+.landscape__container {
+    max-width: 100%;
+    width: 100%;
+    height: 90vh;
+}
+
+.landscape__photo {
+    width: 100%;
+    height: 90vh;
+    position: relative;
+}
+
+.landscape__photo::before {
+    width: 100%;
+    height: 90vh;
+    background-image: url("./images/trains_photo.jpg");
+    background-color: rgba(0, 0, 0, 0.4);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    filter: brightness(50%);
+    position: absolute;
+    content: '';
+    z-index: -1;
+}
+
+.landscape__main {
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.landscape__main__text {
+    color: white;
+    font-family: 'Lato', sans-serif;
+    font-size: 70px;
+}
+
+.landscape__main__encourage {
+    color: #e38d2d;
+    font-family: 'Lato', sans-serif;
+    font-size: 90px;
+    font-weight: bold;
+}
+
+
+.landscape__main__link {
+    text-decoration: none;
+    color: white;
+}
+
+.landscape__main__link:hover {
+    text-decoration: none;
+    color: #ddd;
+}

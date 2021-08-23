@@ -1,0 +1,57 @@
+.finder__container {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px;
+    color: #000;
+    margin: 30px;
+    padding: 30px;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    box-shadow: 0 0 5px 5px #bbb;
+}
+
+.finder__section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px;
+}
+
+.finder__section-element {
+    flex-basis: 100%;
+}
+
+.finder__button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.finder__button {
+    padding: 10px;
+    background-color: #e38d2d;
+    border: 0;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 30px;
+    color: #eee;
+
+}
+
+.finder__header {
+    text-align: center;
+    width: 100%;
+    padding-bottom: 20px;
+    font-size: 30px;
+}
+
+.finder__date {
+    font-family: 'Barlow Condensed', sans-serif;
+    padding: 13px;
+    border: 1px solid #ddd;
+    border-radius: 1px;
+}
+
+.finder__from .finder__to {
+    font-family: 'Barlow Condensed', sans-serif;
+}

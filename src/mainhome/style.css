@@ -1,0 +1,69 @@
+.mainhome{
+    position: relative;
+}
+
+.mainhome::before{
+    width: 100%;
+    height: 700px;
+    position: absolute;
+    mask: url("images/bg.png") no-repeat center;
+    mask-size: contain;
+    z-index: -1;
+    background-color: rgba(0,0,0,0.04);
+    content: '';
+
+}
+
+.mainhome__header{
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 40px;
+    text-align: center;
+    margin: 40px;
+}
+
+.mainhome__finders {
+    margin: 0 auto;
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mainhome__finders > * {
+    flex-basis: 100%;
+}
+
+.mainhome__btnmap{
+    height: 500px;
+    background-color: #e38d2d;
+    color: #eeeeee;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 40px;
+    border: none;
+    border-radius: 5px;
+    transform: scale(1);
+    transition: 0.4s;
+    margin: 30px;
+    padding: 30px;
+}
+
+.mainhome__or{
+    margin: 30px;
+    font-size: 24px;
+    text-align: center;
+}
+
+.mainhome__btnmap:hover{
+    transform: scale(1.05);
+    transition: 0.4s;
+    cursor: pointer;
+}
+
+.mainhome__btnmapicon{
+    mask: url('https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg') no-repeat;
+    mask-position: center 0;
+    background-color: #eeeeee;
+    width: 100%;
+    height: 300px;
+
+}

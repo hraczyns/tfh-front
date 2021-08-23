@@ -1,0 +1,44 @@
+.leaflet-container {
+    width: 100%;
+    height: 100vh;
+}
+
+.findermap__results {
+    bottom: 10%;
+    right: 5%;
+    width: 400px;
+    height: 200px;
+    z-index: 999;
+    position: fixed;
+    background-color: #e38d2d;
+    border-radius: 20px;
+    padding: 30px;
+    color: #eee;
+    font-size: 20px;
+}
+
+.findermap__results--visible {
+    animation: showLightBoxIn forwards 1s;
+}
+
+.findermap__results--hidden {
+    animation: showLightBoxOut forwards 1s;
+}
+
+@keyframes showLightBoxIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes showLightBoxOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
