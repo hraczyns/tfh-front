@@ -2,6 +2,7 @@ import './style.css';
 import DropdownSearchSelection from "../../dropdownsearchselection/DropdownSearchSelection";
 import {useEffect, useState} from "react";
 import {useHistory} from "react-router-dom";
+import cityService from "../../rest/functionalities/CityService.js"
 
 
 const Finder = () => {
@@ -22,7 +23,6 @@ const Finder = () => {
             if (v.id === 'finder__from') {
                 const sourceId = cities.filter(s => s.value === v.value)
                     .map(s => s.key)[0];
-                console.log(sourceId)
                 setChoice(prev => ({
                     ...prev,
                     'source': sourceId
@@ -58,14 +58,10 @@ const Finder = () => {
     }
 
     const provideCityData = () => {
-        fetch('http://localhost:8084/api/cities/all')
-            .then(data => {
-                return data.json();
-            })
-            .then(json => {
-                const parsed = parseCityData(json);
-                setCities(parsed);
-            })
+        cityService.getAll(json => {
+            const parsed = parseCityData(json);
+            setCities(parsed);
+        })
     }
 
     useEffect(() => {

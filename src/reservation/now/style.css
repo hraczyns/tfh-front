@@ -1,0 +1,154 @@
+.reservenow {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    font-family: 'Barlow Condensed', 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+}
+
+.reservenow__route {
+    padding: 100px 0 0;
+    background-color: #e38d2d;
+    width: 40%;
+    border-left: 1px solid black;
+}
+
+.reservenow__content-route {
+    overflow: hidden scroll;
+    max-height: 100vh;
+}
+
+.reservenow__general {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    color: #eee;
+    font-size: 60px;
+    margin-bottom: 100px;
+}
+
+.reservenow__general-date {
+    font-size: 50px;
+}
+
+.reservenow__price-summary {
+    margin: 70px 20px 60px;
+    font-size: 50px;
+    text-transform: uppercase;
+    color: #eee;
+    display: flex;
+    justify-content: space-between;
+}
+
+.reservenow__price-summary--element {
+    margin: 20px 20px 20px;
+    text-transform: none;
+    font-size: 36px;
+    text-indent: 20px;
+}
+
+.reservenow__price-summary--element:last-child {
+    margin-top: 0;
+}
+
+.reservenow__price-summary--element:last-child {
+    margin-bottom: 60px;
+}
+
+.reservenow__wrapper {
+    margin: 0 auto;
+}
+
+.reservenow__form-wrapper {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.reservenow__form-wrapper-for-all {
+    width: 60%;
+    margin-left: 10px;
+    margin-top: 100px;
+    margin-bottom: 100px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
+}
+
+.reservenow__form {
+    width: 500px;
+    font-size: 24px;
+    box-shadow: 0 0 1px 1px #e38d2d;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.reservenow__form-header {
+    font-size: 26px;
+    text-align: center;
+}
+
+.reservenow__form-element {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.reservenow__form-input {
+    font-family: 'Barlow Condensed', sans-serif;
+    padding: 10px;
+    color: #e38d2d;
+    border: 1px solid #a0631e;
+}
+
+.reservenow__form-input::placeholder {
+    opacity: 0.3;
+}
+
+.reservenow__form-add-btn {
+    width: 100%;
+    margin-top: 10px;
+    color: #eeeeee;
+    background-color: #e38d2d;
+    font-size: 50px;
+    border: none;
+}
+
+.reservenow__form-add-btn:hover {
+    background-color: #b16e23;
+}
+
+.reservenow__form-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.reservenow__crossed-line {
+    text-decoration: line-through;
+    color: #f81717;
+    margin-right: 10px;
+}
+
+.reservenow__reservebtn-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.reservenow__reservebtn {
+    width: 300px;
+    font-size: 52px;
+    font-family: 'Barlow Condensed', sans-serif;
+    padding: 10px;
+    margin: 30px;
+    border-radius: 15px;
+    border: 1px solid #fff;
+    color: #e38d2d;
+}
+
+.reservenow__reservebtn:hover {
+    background-color: #ddd;
+}

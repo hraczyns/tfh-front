@@ -9,6 +9,7 @@ document.head.appendChild(styleLink);
 
 const DropdownSearchSelection = (props) => (
     <Dropdown
+        className = {props.className}
         id={props.name}
         placeholder={props.title || 'Select'}
         fluid
@@ -16,6 +17,7 @@ const DropdownSearchSelection = (props) => (
         selection
         options={props.options}
         onChange={props.onSearchChange}
+        value={props.value}
     />
 )
 

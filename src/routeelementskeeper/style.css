@@ -1,0 +1,47 @@
+.routekeeper__details {
+    margin-bottom: 30px;
+    color: #eeeeee;
+    font-size: 32px;
+}
+
+.routekeeper__details .routekeeper__details-element {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+}
+
+.routekeeper__details {
+    border-bottom: 1px solid #eeeeee;
+}
+
+.routekeeper__details--not-line {
+    border-bottom: none;
+}
+
+.routekeeper__details > :not(.routekeeper__details-element:last-child) {
+    margin: 0 20px 20px;
+}
+
+.routekeeper__details-element:first-child {
+    font-size: 48px;
+}
+
+.routekeeper__price-summary {
+    margin: 70px 20px 60px;
+    font-size: 50px;
+    text-transform: uppercase;
+    color: #eee;
+    display: flex;
+    justify-content: space-between;
+}
+
+.routekeeper__crossed-line{
+    text-decoration: line-through;
+    color: #f81717;
+    margin-right: 10px;
+}
+
+.routekeeper__details-element--priceElement{
+    font-size: 24px;
+    text-indent: 20px;
+}

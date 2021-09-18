@@ -23,6 +23,7 @@
 }
 
 .navigation__list-element:hover{
+    cursor: pointer;
     margin-bottom: -1px;
     border-bottom: 1px solid #eeeeee;
 }

@@ -5,6 +5,7 @@ import FindResultsHome from "./findresults/FindResultsHome";
 import FinderMap from "./finder/map/FinderMap";
 import NotFound from "./utils/NotFound";
 import ReserveNow from "./reservation/now/ReserveNow";
+import Payment from "./payment/Payment";
 
 function App() {
     return (
@@ -15,6 +16,7 @@ function App() {
                     <Route path="/results" exact component={FindResultsHome}/>
                     <Route path="/reserve" component={ReserveNow}/>
                     <Route path="/map" component={FinderMap}/>
+                    <Route path="/payment" component={Payment}/>
                     <Route component={NotFound}/>
                 </Switch>
             </Router>

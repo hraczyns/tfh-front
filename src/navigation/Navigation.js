@@ -1,9 +1,11 @@
 import './style.css'
+import {useHistory} from "react-router-dom";
 
 const Navigation = () => {
+    const history = useHistory();
     return <nav className={"navigation"}>
         <li className={"navigation__list"}>
-            <ul className={"navigation__list-element"}>Find</ul>
+            <ul className={"navigation__list-element"} onClick={() => history.push('/map')}>Find</ul>
             <ul className={"navigation__list-element"}>Reservations</ul>
             <ul className={"navigation__list-element"}>Statistics</ul>
             <ul className={"navigation__list-element"}>About</ul>

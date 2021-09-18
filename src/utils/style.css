@@ -45,3 +45,17 @@
         background-color: #fff;
     }
 }
+
+.error-field{
+    border: 3px solid red;
+    background-color: rgba(255, 23, 23, 0.1);
+}
+
+.error{
+    font-size:16px;
+    color: red;
+}
+
+.error-hidden{
+    display: none;
+}

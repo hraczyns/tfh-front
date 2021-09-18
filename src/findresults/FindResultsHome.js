@@ -4,6 +4,8 @@ import {useEffect, useMemo, useState} from "react";
 import ReactHtmlParser from 'react-html-parser';
 import './style.css'
 import LinkButton from "../utils/LinkButton";
+import RouteResultsElement from '../routeelementskeeper/RouteResultsElement'
+import Loading from "../loading/Loading";
 
 
 const FindResultsHome = ({history}) => {
@@ -12,6 +14,7 @@ const FindResultsHome = ({history}) => {
     const [tableContent, setTableContent] = useState([]);
     const [saveResults, setSavedResults] = useState([]);
     const [resultsJson, setResultsJson] = useState({});
+    const [isLoading, setIsLoading] = useState(true);
     const columns = useMemo(() => [
         {
             Header: '',
@@ -49,8 +52,7 @@ const FindResultsHome = ({history}) => {
         const apiUrl = `http://localhost:8084/api/search?source=${data.source}&destination=${data.destination}&startTime=${data.startTime}`;
         fetch(apiUrl)
             .then(data => data.json())
-            .then(async json =>  {
-                console.log(json)
+            .then(async json => {
                 if (!validate(json)) {
                     return [];
                 }
@@ -94,7 +96,9 @@ const FindResultsHome = ({history}) => {
             })
             .catch(() => {
                 alert("Something wrong happened");
-            })
+            }).finally(() => {
+            setIsLoading(false);
+        })
     }
 
     const getSummaryText = () => {
@@ -135,37 +139,19 @@ const FindResultsHome = ({history}) => {
     const parseContent = () => {
         if (tableContent.length !== 0) {
             const content = [...tableContent]
-                .map(frag => {
+                .map((frag, index) => {
                     const startCity = frag.result.start;
                     const endCity = frag.result.end;
                     const trainName = frag.additionalData.trainName;
                     const trainModel = frag.additionalData.trainModel;
-                    let price;
-                    if (Array.isArray(currentPriceInfo.prices)) {
-                        price = currentPriceInfo.prices
-                            .filter(s => s.startId === frag.additionalData.localStartStopTimeId && s.stopId === frag.additionalData.localEndStopTimeId)
-                            .map(s => s.price)[0];
-                    } else {
-                        price = 0;
-                    }
-                    return <article className={"findresultshome__details"}>
-                        <div className={"findresultshome__details-element"}>
-                            {`${startCity} - ${endCity}`}
-                        </div>
-                        <div className={"findresultshome__details-element"}>
-                            <div>{'Train: '}</div>
-                            <div>{' ' + trainName}</div>
-                        </div>
-                        <div className={"findresultshome__details-element"}>
-                            <div>{'Train class: '}</div>
-                            <div>{' ' + trainModel}</div>
-                        </div>
-                        <div className={"findresultshome__details-element"}>
-                            <div>{'Price: '}</div>
-                            <div>{` ${price} zl`}</div>
-                        </div>
-                        <div/>
-                    </article>
+                    const price = getPriceByStartAndStopId(frag.additionalData.localStartStopTimeId, frag.additionalData.localEndStopTimeId);
+                    return <RouteResultsElement
+                        startCity={startCity}
+                        endCity={endCity}
+                        trainModel={trainModel}
+                        trainName={trainName}
+                        price={price}
+                        setNonBottomFromLast={index === tableContent.length - 1}/>
                 });
 
             content.push(<article className={"findresultshome__price-summary"}>
@@ -173,12 +159,41 @@ const FindResultsHome = ({history}) => {
                 <div>{`${currentPriceInfo.priceInGeneral} zl`}</div>
             </article>);
             content.push(<article className={"findresultshome__reserve-btn-wrapper"}>
-                <LinkButton className={"findresultshome__reserve-btn"} to={"/reserve"}>Book</LinkButton>
+                <LinkButton className={"findresultshome__reserve-btn"} to={"/reserve"}
+                            storageName={'route'} param={prepareRouteParam()}>Book</LinkButton>
             </article>)
-            return content;
 
+            return content;
         }
         return <div/>
+    }
+
+    const prepareRouteParam = () => {
+        const prepared = {};
+        prepared.route = [];
+        [...tableContent]
+            .forEach(frag => {
+                const price = getPriceByStartAndStopId(frag.additionalData.localStartStopTimeId, frag.additionalData.localEndStopTimeId);
+                const obj = frag;
+                obj.price = price;
+                prepared.route.push(obj);
+            });
+
+        prepared.priceInGeneral = currentPriceInfo.priceInGeneral;
+
+        return prepared;
+    }
+
+    const getPriceByStartAndStopId = (startId, stopId) => {
+        let price;
+        if (Array.isArray(currentPriceInfo.prices)) {
+            price = currentPriceInfo.prices
+                .filter(s => s.startId === startId && s.stopId === stopId)
+                .map(s => s.price)[0];
+        } else {
+            price = 0;
+        }
+        return price;
     }
 
     const getParams = () => {
@@ -221,11 +236,16 @@ const FindResultsHome = ({history}) => {
                     <header>Trip details</header>
                     {parseContent()}
                 </div>
-                {processResults().map((result, index) => <Table key={index} columns={columns}
-                                                                data={result.map(el => el.result)}
-                                                                onClick={() => chooseRoute(result, index)}
-                                                                isActive={tableIndex === index}/>)}
-
+                {isLoading ?
+                    <div className={"findresultshome__loading"}>
+                        <Loading/>
+                    </div>
+                    :
+                    processResults().map((result, index) => <Table key={index} columns={columns}
+                                                                   data={result.map(el => el.result)}
+                                                                   onClick={() => chooseRoute(result, index)}
+                                                                   isActive={tableIndex === index}/>)
+                }
             </section>
         </main>
     </div>

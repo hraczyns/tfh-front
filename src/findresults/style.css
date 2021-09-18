@@ -7,14 +7,6 @@
     position: relative;
 }
 
-.findresultshome::before {
-    position: absolute;
-    content: '';
-    z-index: -2;
-    height: 100vh;
-    width: 100%;
-}
-
 .findresultshome__bg-gradient {
     position: absolute;
     height: 700px;
@@ -35,22 +27,24 @@
     margin: 80px auto;
     font-size: 60px;
     font-family: 'Barlow Condensed', sans-serif;
+    position: relative;
 }
 
 .findresultshome__summary-cities {
-    color: #2196f3;
+    /*color: #2196f3;*/
+    color: #e38d2d;
     font-size: 76px;
 }
 
 .findresultshome__picker {
     box-shadow: 0 0 3px 3px black;
     position: fixed;
-    left: 70%;
+    left: 73%;
     top: 0;
     z-index: 2;
     height: 100vh;
-    width: 30%;
-    background-color: #1385e0;
+    width: 27%;
+    background-color: #e38d2d;
     float: right;
     overflow: hidden scroll;
     font-family: 'Barlow Condensed', sans-serif;
@@ -63,34 +57,6 @@
     font-size: 60px;
     margin: 100px auto;
     max-width: 230px;
-}
-
-.findresultshome__details {
-    margin-bottom: 30px;
-    color: #eeeeee;
-    font-size: 32px;
-}
-
-.findresultshome__details .findresultshome__details-element {
-    display: flex;
-    flex-flow: row;
-    justify-content: space-between;
-}
-
-.findresultshome__details {
-    border-bottom: 1px solid #eeeeee;
-}
-
-.findresultshome__details:nth-last-child(3) {
-    border-bottom: none;
-}
-
-.findresultshome__details > :not(.findresultshome__details-element:last-child) {
-    margin: 0 20px 20px;
-}
-
-.findresultshome__details-element:first-child {
-    font-size: 48px;
 }
 
 .findresultshome__price-summary {
@@ -123,4 +89,14 @@
 .findresultshome__reserve-btn:hover {
     transform: scale(1.1);
     background-color: #bbb;
+}
+
+.findresultshome__loading {
+    transform: scale(2);
+    position: absolute;
+    top: 50%;
+    left: calc(36% - 40px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
