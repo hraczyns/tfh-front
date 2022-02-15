@@ -9,7 +9,7 @@
     padding: 100px 0 0;
     background-color: #e38d2d;
     width: 40%;
-    border-left: 1px solid black;
+    border-left: 3px solid black;
 }
 
 .reservenow__content-route {
@@ -84,6 +84,22 @@
     box-shadow: 0 0 1px 1px #e38d2d;
     border-radius: 12px;
     padding: 20px;
+    position: relative;
+}
+
+.reservenow__form-cancel {
+    border: none;
+    background: inherit;
+    position: absolute;
+    font-family: monospace;
+    top: 0;
+    right: 10px;
+    margin: 10px;
+    transition-duration: 0.15s;
+}
+
+.reservenow__form-cancel:hover {
+   transform: scale(1.3);
 }
 
 .reservenow__form-header {
@@ -121,6 +137,10 @@
     background-color: #b16e23;
 }
 
+.reservenow__form-add-btn:disabled {
+    background-color: #ccc;
+}
+
 .reservenow__form-section {
     display: flex;
     flex-direction: column;
@@ -133,6 +153,7 @@
 }
 
 .reservenow__reservebtn-wrapper {
+    border-top: 1px solid black;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -151,4 +172,9 @@
 
 .reservenow__reservebtn:hover {
     background-color: #ddd;
+}
+
+.reservenow__form-confirmed {
+    padding: 10px;
+    color: #e38d2d;
 }

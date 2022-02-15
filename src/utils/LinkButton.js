@@ -1,11 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {withRouter} from 'react-router'
+import {useHistory} from "react-router-dom";
 
 const LinkButton = (props) => {
+    const history = useHistory();
     const {
         storageName,
-        history,
         location,
         match,
         staticContext,
@@ -21,7 +21,7 @@ const LinkButton = (props) => {
                 onClick && onClick(event)
                 if (storageName) {
                     sessionStorage.setItem(storageName, JSON.stringify(param));
-                    history.push(to,storageName);
+                    history.push(to, storageName);
                 } else {
                     history.push(to, param);
                 }
@@ -35,4 +35,4 @@ LinkButton.propTypes = {
     children: PropTypes.node.isRequired
 }
 
-export default withRouter(LinkButton)
+export default LinkButton;

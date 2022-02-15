@@ -25,10 +25,10 @@ const RequiredInput = ({className, value, name, placeholder, onChange, type}) =>
     }
 
 
-    return <Fragment>
+    return <>
         <input className={inputClassName} value={value} name={name} placeholder={placeholder} onChange={onChange}/>
         <span className={spanClassName}>{errorMessage}</span>
-    </Fragment>;
+    </>;
 }
 
 export default RequiredInput

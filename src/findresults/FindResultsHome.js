@@ -1,12 +1,50 @@
-import Navigation from "../navigation/Navigation";
 import Table from '../table/Table'
 import {useEffect, useMemo, useState} from "react";
-import ReactHtmlParser from 'react-html-parser';
 import './style.css'
 import LinkButton from "../utils/LinkButton";
 import RouteResultsElement from '../routeelementskeeper/RouteResultsElement'
 import Loading from "../loading/Loading";
+import findResultsMapper from "./FindResultsMapper";
+import resultsService from "../rest/functionalities/ResultsService";
+import PriceService from "../rest/functionalities/PriceService";
+import priceServiceParams from "./PriceServiceParams";
 
+const COLUMNS = [
+    {
+        Header: '',
+        accessor: 'no_content'
+    },
+    {
+        Header: 'From',
+        accessor: 'start'
+    },
+    {
+        Header: 'To',
+        accessor: 'end'
+    },
+    {
+        Header: 'Arrival',
+        accessor: 'arrivalTime'
+    },
+    {
+        Header: 'Departure',
+        accessor: 'departureTime'
+    },
+    {
+        Header: 'Train',
+        accessor: 'train'
+    }
+];
+
+const NOT_EXISTING_TRAIN_ID = -1;
+
+const extractRoutes = foundResults => foundResults?._embedded?.journeyDtoList.map(s => s.partOfJourneys) ?? [];
+
+const validate = json => json?._embedded?.journeyDtoList.every(s => s.resultId) ?? false;
+
+const getParams = (content) => {
+    return priceServiceParams.getParamsByContent(content);
+}
 
 const FindResultsHome = ({history}) => {
     const [currentPriceInfo, setCurrentPriceInfo] = useState({});
@@ -15,105 +53,46 @@ const FindResultsHome = ({history}) => {
     const [saveResults, setSavedResults] = useState([]);
     const [resultsJson, setResultsJson] = useState({});
     const [isLoading, setIsLoading] = useState(true);
-    const columns = useMemo(() => [
-        {
-            Header: '',
-            accessor: 'no_content'
-        },
-        {
-            Header: 'From',
-            accessor: 'start'
-        },
-        {
-            Header: 'To',
-            accessor: 'end'
-        },
-        {
-            Header: 'Arrival',
-            accessor: 'arrivalTime'
-        },
-        {
-            Header: 'Departure',
-            accessor: 'departureTime'
-        },
-        {
-            Header: 'Train',
-            accessor: 'train'
-        }
-    ], []);
+    const columns = useMemo(() => COLUMNS, []);
 
-    const data = history.location.state;
+    const {source, destination, startTime} = history?.location?.state;
 
     useEffect(() => {
-        extractData()
-    }, []);
-
-    const extractData = async () => {
-        const apiUrl = `http://localhost:8084/api/search?source=${data.source}&destination=${data.destination}&startTime=${data.startTime}`;
-        fetch(apiUrl)
-            .then(data => data.json())
-            .then(async json => {
-                if (!validate(json)) {
-                    return [];
+        (async () => {
+            try {
+                setIsLoading(true);
+                const foundResults = await resultsService.findResults(source, destination, startTime);
+                if (!validate(foundResults)) {
+                    return;
                 }
-                setResultsJson(json);
-                const parts = json._embedded.journeyDTOList.map(s => s.partOfJourneys);
-                for (const route of parts) {
-                    for (const s of route) {
-                        await fetch('http://localhost:8084/api/trains/images?train_id=' + s.train.id)
-                            .then(data => data.text())
-                            .then(trainImg => {
-                                const resultObj = {
-                                    start: s.start.cityDTO.name,
-                                    arrivalTime: checkDate(s.start.departureTime),
-                                    departureTime: checkDate(s.end.arrivalTime),
-                                    end: s.end.cityDTO.name,
-                                    train: ReactHtmlParser(trainImg)
-                                };
-
-                                const additionalData = {
-                                    trainName: s.train.name,
-                                    trainModel: s.train.model,
-                                    trainUniqueName: s.train.representationUnique,
-                                    generalStartId: json._embedded.journeyDTOList[0].source.id,
-                                    generalDestId: json._embedded.journeyDTOList[0].destination.id,
-                                    localStartId: s.start.cityDTO.id,
-                                    localEndId: s.end.cityDTO.id,
-                                    localStartStopTimeId: s.start.id,
-                                    localEndStopTimeId: s.end.id
-                                };
-
-                                const resToSave = {
-                                    id: -1,
-                                    result: resultObj,
-                                    additionalData: additionalData
-                                };
-
-                                setSavedResults(prevState => [...prevState, resToSave]);
-                            })
+                setResultsJson(foundResults);
+                const routes = extractRoutes(foundResults);
+                const generaleResultsArray = [];
+                for (const route of routes) {
+                    for (const stopTime of route) {
+                        const trainImg = await resultsService.findTrainImg(stopTime?.train.id ?? NOT_EXISTING_TRAIN_ID);
+                        const resultObj = findResultsMapper.mapResponseToMainInfo(stopTime, trainImg);
+                        const additionalData = findResultsMapper.mapResponseToAdditionalInfo(stopTime, foundResults);
+                        const resToSave = findResultsMapper.mapResponseToGeneralResults(resultObj, additionalData);
+                        generaleResultsArray.push(resToSave);
                     }
                 }
-            })
-            .catch(() => {
-                alert("Something wrong happened");
-            }).finally(() => {
-            setIsLoading(false);
-        })
-    }
+                setSavedResults(generaleResultsArray);
+            } catch (e) {
+            } finally {
+                setIsLoading(false);
+            }
+        })();
+    }, [source, destination, startTime]);
 
     const getSummaryText = () => {
         if (!validate(resultsJson)) {
             return '';
         }
-        const from = resultsJson._embedded.journeyDTOList[0].source.name;
-        const to = resultsJson._embedded.journeyDTOList[0].destination.name;
+        const from = resultsJson?._embedded?.journeyDtoList[0].source.name;
+        const to = resultsJson?._embedded?.journeyDtoList[0].destination.name;
         return <p className={"findresultshome__summary-cities"}>{`${from} - ${to}`}</p>
     }
-
-    const checkDate = json => json.length > 20 ? '-' : json.replace('T', ' ');
-
-    const validate = json => json && json._embedded &&
-        json._embedded.journeyDTOList && json._embedded.journeyDTOList.every(s => s.resultId);
 
     const processResults = () => {
         const objToSplit = [...saveResults];
@@ -124,8 +103,8 @@ const FindResultsHome = ({history}) => {
         const arr = [];
         let skipped = 0;
         let id = 1;
-        resultsJson._embedded.journeyDTOList.forEach(resFromBackend => {
-            const lengthOfElsOneRoute = resFromBackend.partOfJourneys.length;
+        resultsJson?._embedded?.journeyDtoList.forEach(resFromBackend => {
+            const lengthOfElsOneRoute = resFromBackend?.partOfJourneys.length;
             arr.push(objToSplit.slice(skipped, skipped + lengthOfElsOneRoute).map(obj => {
                 obj.id = id;
                 return obj;
@@ -140,12 +119,11 @@ const FindResultsHome = ({history}) => {
         if (tableContent.length !== 0) {
             const content = [...tableContent]
                 .map((frag, index) => {
-                    const startCity = frag.result.start;
-                    const endCity = frag.result.end;
-                    const trainName = frag.additionalData.trainName;
-                    const trainModel = frag.additionalData.trainModel;
-                    const price = getPriceByStartAndStopId(frag.additionalData.localStartStopTimeId, frag.additionalData.localEndStopTimeId);
+                    const {startCity, endCity, trainName, trainModel} = findResultsMapper.mapToTableFragment(frag);
+                    let price = getPriceByStartAndStopId(frag);
+                    if (!price) price = '0.0 zl';
                     return <RouteResultsElement
+                        key={index}
                         startCity={startCity}
                         endCity={endCity}
                         trainModel={trainModel}
@@ -154,11 +132,11 @@ const FindResultsHome = ({history}) => {
                         setNonBottomFromLast={index === tableContent.length - 1}/>
                 });
 
-            content.push(<article className={"findresultshome__price-summary"}>
+            content.push(<article className={"findresultshome__price-summary"} key={-2}>
                 <div>Summary price</div>
                 <div>{`${currentPriceInfo.priceInGeneral} zl`}</div>
             </article>);
-            content.push(<article className={"findresultshome__reserve-btn-wrapper"}>
+            content.push(<article className={"findresultshome__reserve-btn-wrapper"} key={-1}>
                 <LinkButton className={"findresultshome__reserve-btn"} to={"/reserve"}
                             storageName={'route'} param={prepareRouteParam()}>Book</LinkButton>
             </article>)
@@ -173,7 +151,7 @@ const FindResultsHome = ({history}) => {
         prepared.route = [];
         [...tableContent]
             .forEach(frag => {
-                const price = getPriceByStartAndStopId(frag.additionalData.localStartStopTimeId, frag.additionalData.localEndStopTimeId);
+                const price = getPriceByStartAndStopId(frag);
                 const obj = frag;
                 obj.price = price;
                 prepared.route.push(obj);
@@ -184,11 +162,11 @@ const FindResultsHome = ({history}) => {
         return prepared;
     }
 
-    const getPriceByStartAndStopId = (startId, stopId) => {
+    const getPriceByStartAndStopId = ({additionalData: {localStartStopTimeId, localEndStopTimeId}}) => {
         let price;
-        if (Array.isArray(currentPriceInfo.prices)) {
-            price = currentPriceInfo.prices
-                .filter(s => s.startId === startId && s.stopId === stopId)
+        if (Array.isArray(currentPriceInfo?.prices)) {
+            price = currentPriceInfo?.prices
+                .filter(s => s.startId === localStartStopTimeId && s.stopId === localEndStopTimeId)
                 .map(s => s.price)[0];
         } else {
             price = 0;
@@ -196,59 +174,43 @@ const FindResultsHome = ({history}) => {
         return price;
     }
 
-    const getParams = () => {
-        return [...tableContent]
-            .map(frag => {
-                return {
-                    startId: frag.additionalData.localStartStopTimeId,
-                    stopId: frag.additionalData.localEndStopTimeId
-                }
-            }).reduce((prev, curr, index) => {
-                if (index === 0) {
-                    prev += curr.startId + ',' + curr.stopId;
-                } else {
-                    prev += ',' + curr.startId + ',' + curr.stopId;
-                }
-                return prev;
-            }, '');
-    }
-
     const chooseRoute = async (content, index) => {
         setTableIndex(index);
         setTableContent(content);
-        await fetch(`http://localhost:8084/api/payment/estimation?ids=${getParams()}`)
-            .then(data => data.json())
-            .then(json => {
-                setCurrentPriceInfo(json);
-            })
+        const priceInfo = await PriceService.getEstimatedPrice(getParams(content));
+        setCurrentPriceInfo(priceInfo);
     }
 
-    return <div>
-        <Navigation/>
-        <main className={"findresultshome"}>
-            <div className={"findresultshome__bg-gradient"}/>
-            <section className={"findresultshome__summary"}>
-                Results for trip
-                {getSummaryText()}
-            </section>
-            <section className={"findresultshome__content"}>
-                <div className={"findresultshome__picker"}>
-                    <header>Trip details</header>
-                    {parseContent()}
-                </div>
-                {isLoading ?
-                    <div className={"findresultshome__loading"}>
-                        <Loading/>
-                    </div>
-                    :
-                    processResults().map((result, index) => <Table key={index} columns={columns}
-                                                                   data={result.map(el => el.result)}
-                                                                   onClick={() => chooseRoute(result, index)}
-                                                                   isActive={tableIndex === index}/>)
-                }
-            </section>
-        </main>
-    </div>
+    const tableResults = () => {
+        return processResults().map((result, index) => <Table key={index} columns={columns}
+                                                              data={result.map(el => el.result)}
+                                                              onClick={() => chooseRoute(result, index)}
+                                                              isActive={tableIndex === index}/>)
+    }
+
+    const getMainResultsTableData = () => {
+        return isLoading ?
+            <div className={"findresultshome__loading"}>
+                <Loading/>
+            </div>
+            :
+            tableResults();
+    }
+
+    return <main className={"findresultshome"}>
+        <div className={"findresultshome__bg-gradient"}/>
+        <section className={"findresultshome__summary"}>
+            Results for trip
+            {getSummaryText()}
+        </section>
+        <section className={"findresultshome__content"}>
+            <div className={"findresultshome__picker"}>
+                <header>Trip details</header>
+                {parseContent()}
+            </div>
+            {getMainResultsTableData()}
+        </section>
+    </main>
 }
 
 export default FindResultsHome

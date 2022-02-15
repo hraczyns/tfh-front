@@ -2,17 +2,31 @@ import './style.css';
 import DropdownSearchSelection from "../../dropdownsearchselection/DropdownSearchSelection";
 import {useEffect, useState} from "react";
 import {useHistory} from "react-router-dom";
-import cityService from "../../rest/functionalities/CityService.js"
+import CityService from "../../rest/functionalities/CityService";
 
+const NOT_CHOSEN = -1;
 
 const Finder = () => {
     const history = useHistory();
     const [cities, setCities] = useState([]);
     const [choice, setChoice] = useState({
-        source: -1,
-        destination: -1,
+        source: NOT_CHOSEN,
+        destination: NOT_CHOSEN,
         startTime: ''
     })
+
+    useEffect(() => {
+        (async () => {
+                try {
+                    const result = await CityService.getAll()
+                    setCities(parseCityData(result));
+                } catch (e) {
+                }
+            }
+        )
+        ();
+    }, [])
+
     const findTrip = (e) => {
         e.preventDefault();
         history.push("/results", choice);
@@ -44,8 +58,8 @@ const Finder = () => {
     }
 
     const parseCityData = input => {
-        if (input && input._embedded && input._embedded.cityDTOList) {
-            const arr = [...input._embedded.cityDTOList];
+        if (input?._embedded?.cityDtoList) {
+            const arr = [...input._embedded.cityDtoList];
             return arr.map(rec => {
                 return {
                     key: rec.id,
@@ -57,19 +71,8 @@ const Finder = () => {
         return [];
     }
 
-    const provideCityData = () => {
-        cityService.getAll(json => {
-            const parsed = parseCityData(json);
-            setCities(parsed);
-        })
-    }
-
-    useEffect(() => {
-        provideCityData();
-    }, [])
-
     return <div className={"finder__container"}>
-        <form onSubmit={e => findTrip(e)}>
+        <form onSubmit={findTrip}>
             <div className={"finder__header"}>Search:</div>
             <div className={"finder__section"}>
                 <label className={"finder__section-element finder__label"}>From:</label>

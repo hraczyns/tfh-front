@@ -1,8 +1,7 @@
 import Landscape from "../landscape/Landscape";
 import MainHome from "../mainhome/MainHome";
-import Navigation from "../navigation/Navigation";
 
-export default function Index() {
+export default function Home() {
 
     //TODO
     // 1. Static landscape
@@ -14,7 +13,6 @@ export default function Index() {
 
 
     return <div>
-        <Navigation/>
         <Landscape/>
         <MainHome/>
     </div>
