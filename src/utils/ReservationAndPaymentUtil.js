@@ -1,5 +1,4 @@
 const ReservationAndPaymentUtil = {
-    // for now the first passenger is that registered
     prepareReservationObject: (route, passengers) => {
         const object = {
             idPassengersWithDiscounts: [],
@@ -7,9 +6,6 @@ const ReservationAndPaymentUtil = {
             reservedRoute: [],
 
         }
-        //check if someone is logged in...
-
-        //here another action
         passengers.forEach(pass => {
             object.passengerNotRegisteredList.push({
                 discountCode: pass.discount ? pass.discount.charAt(0).toUpperCase() : "",
@@ -23,7 +19,6 @@ const ReservationAndPaymentUtil = {
             object.reservedRoute.push(part.additionalData.localStartStopTimeId);
             object.reservedRoute.push(part.additionalData.localEndStopTimeId);
         })
-        // object.reservedRoute.push(prepareRoute(route));
 
         return object;
 

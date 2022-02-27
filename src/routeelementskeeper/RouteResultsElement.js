@@ -56,7 +56,7 @@ const RouteResultsElement = ({
             <div/>
         </div>];
         for (let i = 0; i < passengers.length; i++) {
-            const passenger = passengers[i + 1];
+            const passenger = passengers[i];
             let person = passenger.name + ' ' + passenger.surname;
             if (person.trim() === '') {
                 person = 'Person n.' + (i + 1);

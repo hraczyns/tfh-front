@@ -57,6 +57,8 @@ const getWithMode = (result, mode) => {
     switch (mode) {
         case RestServiceMode.TEXT:
             return result.text();
+        case RestServiceMode.PURE_RESPONSE:
+            return result;
         case RestServiceMode.DEFAULT:
         case RestServiceMode.JSON:
         default:

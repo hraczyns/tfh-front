@@ -5,8 +5,9 @@ const ClientSideTempCalculations = () => {
                 return 50;
             } else if (discountName === 'veteran') {
                 return 90;
+            } else if (discountName === 'pupil') {
+                return 33;
             }
-        } else {
             return 0;
         }
         return 0;

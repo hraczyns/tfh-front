@@ -1,5 +1,5 @@
 .payment {
-    background-color: #fff;
+    background-color: #eee;
     min-height: 100vh;
 }
 
@@ -52,6 +52,10 @@
     justify-content: center;
     height: 100vh;
     width: 70%;
+}
+
+.payment-error-msg{
+    font-size: 36px;
 }
 
 .payment-body {
