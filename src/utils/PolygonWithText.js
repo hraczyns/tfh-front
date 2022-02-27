@@ -17,7 +17,6 @@ const PolygonWithText = props => {
         className: className
     });
 
-
     return (
         <Polygon color="black" positions={props.coords}>
             <Marker position={center} icon={text} eventHandlers={{

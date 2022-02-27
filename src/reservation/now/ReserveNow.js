@@ -8,18 +8,43 @@ import ClientSideTempCalculations from '../../utils/ClientSideTempCalculations'
 import RequiredInput from "../../utils/RequiredInput";
 import LinkButton from "../../utils/LinkButton";
 import EmailValidator from "../../utils/EmailValidator";
+import {reserveNowMapper} from "./ReserveNowMapper";
+
+const NAME = 'name';
+const SURNAME = 'surname';
+const EMAIL = 'email';
+const DISCOUNT = 'discount';
+const EMPTY_OPTION = {
+    key: '',
+    value: '',
+    text: ''
+}
 
 const ReserveNow = ({history}) => {
+    const [isReady, setReady] = useState(false)
     const [options, setOptions] = useState([]);
     const parsed = JSON.parse(sessionStorage.getItem(history.location.state));
-    // eslint-disable-next-line no-unused-vars
-    const {route, priceInGeneral} = parsed;
+    const {route} = parsed;
 
     const calculator = new ClientSideTempCalculations();
 
-    useEffect(() => getOptions(), []);
+    useEffect(() => {
+        (async () => {
+            const possibleDiscounts = await ReservationService.getPossibleDiscounts();
+            const opts = [EMPTY_OPTION];
+            for (const [key, value] of Object.entries(possibleDiscounts)) {
+                opts.push({
+                    key: key,
+                    value: key,
+                    text: `${key} (${value}%)`
+                })
+            }
+            setOptions(opts);
+        })();
+    }, []);
 
-    const getAddBtn = () => <button className={"reservenow__form-add-btn"} onClick={() => addPassengerForm()}>+</button>
+    const getAddBtn = () => <button disabled={isReady} className={"reservenow__form-add-btn"}
+                                    onClick={() => addPassengerForm()}>+</button>
 
     const getRoute = () => {
         const generalTrip = (
@@ -33,14 +58,17 @@ const ReserveNow = ({history}) => {
 
         const content = [...route]
             .map((frag, index) => {
-                const startCity = frag.result.start;
-                const endCity = frag.result.end;
-                const arrivalTime = frag.result.arrivalTime;
-                const departureTime = frag.result.departureTime;
-                const trainName = frag.additionalData.trainName;
-                const trainModel = frag.additionalData.trainModel;
-                const price = frag.price;
+                const {
+                    startCity,
+                    endCity,
+                    arrivalTime,
+                    departureTime,
+                    trainName,
+                    trainModel,
+                    price
+                } = reserveNowMapper.mapToRouteContent(frag);
                 return <RouteResultsElement
+                    key={index}
                     startCity={startCity}
                     endCity={endCity}
                     arrivalTime={arrivalTime}
@@ -95,11 +123,11 @@ const ReserveNow = ({history}) => {
     const handleChange = (e, index, valueFromDropdown) => {
         const controlName = e.target.name;
         const passenger = passengers[index];
-        if (controlName === 'Name') {
+        if (controlName === NAME) {
             passenger.name = e.target.value;
-        } else if (controlName === 'Surname') {
+        } else if (controlName === SURNAME) {
             passenger.surname = e.target.value;
-        } else if (controlName === 'Email') {
+        } else if (controlName === EMAIL) {
             passenger.email = e.target.value;
         } else {
             if (valueFromDropdown) {
@@ -119,64 +147,58 @@ const ReserveNow = ({history}) => {
         discount: ''
     }]);
 
-    const getOptions = () => {
-        ReservationService.getPossibleDiscounts(json => {
-            const opts = [{
-                key: '',
-                value: '',
-                text: ''
-            }];
-            for (const [key, value] of Object.entries(json)) {
-                opts.push({
-                    key: key,
-                    value: key,
-                    text: `${key} (${value}%)`
-                })
-            }
-            setOptions(opts);
-        })
+    const getRequiredDependsOnIsReady = (index, prop) => {
+        if (prop === DISCOUNT) {
+            return <DropdownSearchSelection className={"reservenow__form-input"} disabled={isReady}
+                                            options={options}
+                                            onSearchChange={(e, v) => handleChange(e, index, v)}
+                                            value={passengers[index] ? passengers[index].discount : ''}/>
+        }
+        if (isReady) {
+            return <label
+                className={"reservenow__form-confirmed"}>{passengers[index] ? passengers[index][prop] : ''}</label>
+        }
+        return <RequiredInput className={"reservenow__form-input"}
+                              value={passengers[index] ? passengers[index][prop] : ''}
+                              type={(prop === 'email' ? 'email' : "personalData")}
+                              name={prop} placeholder={`Type ${prop}`}
+                              onChange={e => handleChange(e, index)}/>
     }
 
     const getForm = index => {
-        return <div className={"reservenow__form-wrapper"}>
+        return <div className={"reservenow__form-wrapper"} key={index}>
             <form className={"reservenow__form"}>
+                <button className={"reservenow__form-cancel"} disabled={index === 0}
+                        onClick={() => deleteForm(index)}>x
+                </button>
                 <header className={"reservenow__form-header"}>
                     Person n.{index + 1}
                 </header>
                 <div className={"reservenow__form-element"}>
                     <label>Name:</label>
-                    <RequiredInput className={"reservenow__form-input"}
-                                   value={passengers[index] ? passengers[index].name : ''}
-                                   type={"personalData"}
-                                   name={"Name"} placeholder={"Type name"}
-                                   onChange={e => handleChange(e, index)}/>
+                    {getRequiredDependsOnIsReady(index, 'name')}
                 </div>
                 <div className={"reservenow__form-element"}>
                     <label>Surname:</label>
-                    <RequiredInput className={"reservenow__form-input"}
-                                   value={passengers[index] ? passengers[index].surname : ''} name={"Surname"}
-                                   type={"personalData"}
-                                   placeholder={"Type surname"}
-                                   onChange={e => handleChange(e, index)}/>
+                    {getRequiredDependsOnIsReady(index, 'surname')}
                 </div>
                 <div className={"reservenow__form-element"}>
                     <label>Email:</label>
-                    <RequiredInput className={"reservenow__form-input"}
-                                   value={passengers[index] ? passengers[index].email : ''}
-                                   name={"Email"} placeholder={"Type email"}
-                                   onChange={e => handleChange(e, index)}
-                                   type={"email"}/>
+                    {getRequiredDependsOnIsReady(index, 'email')}
                 </div>
                 <div className={"reservenow__form-element"}>
                     <label>Discount:</label>
-                    <DropdownSearchSelection className={"reservenow__form-input"}
-                                             options={options}
-                                             onSearchChange={(e, v) => handleChange(e, index, v)}
-                                             value={passengers[index] ? passengers[index].discount : ''}/>
+                    {getRequiredDependsOnIsReady(index, 'discount')}
                 </div>
             </form>
         </div>
     }
+
+    const deleteForm = (index) => {
+        setPassengersForm(prev => [...prev].filter((f, indexOfForm) => indexOfForm !== index));
+        setPassengers(prev => [...prev].filter((p, indexOfForm) => indexOfForm !== index))
+    }
+
     const addPassengerForm = () => {
         setPassengersForm(prev => [...prev, getForm()]);
         setPassengers(prev => [...prev, {
@@ -194,7 +216,7 @@ const ReserveNow = ({history}) => {
             {passengersForm.map((el, index) => {
                 if (index === passengersForm.length - 1) {
                     return (
-                        <div>
+                        <div key={index}>
                             <div className={"reservenow__form-section"}>
                                 {getForm(index)}
                             </div>
@@ -223,8 +245,15 @@ const ReserveNow = ({history}) => {
             passengers: passengers
         }
         return <div className={"reservenow__reservebtn-wrapper"}>
-            <LinkButton disabled={hasErrors()} className={"reservenow__reservebtn"} to={"/payment"}
-                        param={objToSend} storageName={"dataForPayment"}>Reserve</LinkButton>
+            {isReady ?
+                <div>
+                    <LinkButton disabled={hasErrors()} className={"reservenow__reservebtn"}
+                                to={"/payment"} param={objToSend} storageName={"dataForPayment"}>Confirm</LinkButton>
+                    <button className={"reservenow__reservebtn"} onClick={() => setReady(false)}>Cancel</button>
+                </div> :
+                <button disabled={hasErrors()} className={"reservenow__reservebtn"}
+                        onClick={() => setReady(true)}>Reserve</button>
+            }
         </div>
     }
 

@@ -13,6 +13,7 @@ const DropdownSearchSelection = (props) => (
         id={props.name}
         placeholder={props.title || 'Select'}
         fluid
+        disabled = {props.disabled}
         search
         selection
         options={props.options}
