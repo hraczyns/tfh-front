@@ -3,6 +3,7 @@
     width: 100%;
     justify-content: space-between;
     font-family: 'Barlow Condensed', 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    background-color: #eee;
 }
 
 .reservenow__route {
@@ -85,6 +86,7 @@
     border-radius: 12px;
     padding: 20px;
     position: relative;
+    background-color: #fff;
 }
 
 .reservenow__form-cancel {

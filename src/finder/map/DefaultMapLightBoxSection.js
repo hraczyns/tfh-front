@@ -2,11 +2,10 @@ export const DefaultMapLightBoxSection = ({mainClassName, initStyle}) => (
     <section className={mainClassName} style={initStyle}>
         <div className={"findermap__results-element"}>
             <p>From: </p>
-            <b>bye ;)</b>
+            <br/>
         </div>
         <div className={"findermap__results-element"}>
-            <>To:</>
-            <b>bye ;)</b>
+            <p>To:</p>
         </div>
         <div className={"findermap__results-element"}>
             <p>Date: </p>
@@ -14,4 +13,4 @@ export const DefaultMapLightBoxSection = ({mainClassName, initStyle}) => (
         </div>
         <button className={"findermap__results-button"} disabled>Find route</button>
     </section>
-)
+);

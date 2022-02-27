@@ -1,4 +1,4 @@
-export const MapLightBoxSection = ({mainClassName, initStyle, route, chosen, onClick, onDateChange}) => (
+export const MapLightBoxSection = ({mainClassName, initStyle, route, chosen, onClick, onDateChange, isDisabledBtn}) => (
     <section className={mainClassName} style={initStyle}>
         <div className={"findermap__results-element"}>
             <p>From: </p>
@@ -11,8 +11,8 @@ export const MapLightBoxSection = ({mainClassName, initStyle, route, chosen, onC
         <div className={"findermap__results-element"}>
             <p>Date: </p>
             <input className="findermap__results-element-date" type={"datetime-local"}
-                   onChange={e => onDateChange(e)}/>
+                   onChange={onDateChange}/>
         </div>
-        <button className={"findermap__results-button"} onClick={onClick}>Find route</button>
+        <button className={"findermap__results-button"} onClick={onClick} disabled={isDisabledBtn}>Find route</button>
     </section>
 )

@@ -24,6 +24,9 @@ const ReserveNow = ({history}) => {
     const [isReady, setReady] = useState(false)
     const [options, setOptions] = useState([]);
     const parsed = JSON.parse(sessionStorage.getItem(history.location.state));
+    if (!parsed) {
+        history.replace('/results');
+    }
     const {route} = parsed;
 
     const calculator = new ClientSideTempCalculations();

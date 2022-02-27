@@ -29,8 +29,6 @@ const FinderMap = () => {
                 setCitiesJson(result);
                 setCities(result._embedded?.cityDtoList ?? []);
             } catch (e) {
-                console.log("Completely unexpected error");
-                // handleUnexpectedError();
             }
         })();
     }, []);
@@ -88,7 +86,8 @@ const FinderMap = () => {
                     route={route}
                     onDateChange={handleChosenDate}
                     onClick={findRoute}
-                    chosen={chosen}/>
+                    chosen={chosen}
+                    isDisabledBtn={!chosenDate}/>
             } else {
                 return <PolygonWithText text={`${route[0].name} - ${route[1].name}`}
                                         coords={[[route[0].lat, route[0].lon], [route[1].lat, route[1].lon]]}
