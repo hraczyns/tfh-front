@@ -1,5 +1,5 @@
 import {MapContainer, TileLayer, useMapEvent} from 'react-leaflet';
-import './style.css'
+import './findermap.css'
 import {useEffect, useState} from "react";
 import PolygonWithText from '../../utils/PolygonWithText'
 import {useHistory} from 'react-router-dom'

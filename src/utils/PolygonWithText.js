@@ -1,7 +1,7 @@
 import React from 'react';
 import L from 'leaflet';
 import {Marker, Polygon} from 'react-leaflet';
-import './style.css';
+import './utils.css';
 
 const PolygonWithText = props => {
     const center = L.polygon(props.coords).getBounds().getCenter();

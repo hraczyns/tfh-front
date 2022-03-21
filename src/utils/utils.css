@@ -1,0 +1,108 @@
+.notfound {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #eee;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 24px;
+    width: 100%;
+}
+
+.notfound__head {
+    font-size: 56px;
+    font-family: 'Barlow Condensed', sans-serif;
+    color: #e38d2d;
+}
+
+.notfound button {
+    padding: 10px;
+    margin: 10px;
+    background-color: #e38d2d;
+    color: #eee;
+    border: none;
+    border-radius: 5px;
+    transition: transform 0.2s;
+}
+
+.notfound button:hover {
+    transform: scale(1.05);
+}
+
+.leaflet-div-icon-for-city {
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #e38d2d;
+    border: 1px solid black;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 10px;
+    color: #333;
+}
+
+.leaflet-div-icon-for-city--chosen {
+    background-color: #2196f3;
+    animation: flipColor infinite 2s;
+}
+
+.leaflet-div-icon-for-city--route {
+    background-color: #fff;
+}
+
+@keyframes flipColor {
+    from {
+        background-color: #fff;
+    }
+    50% {
+        background-color: #2196f3;
+    }
+    to {
+        background-color: #fff;
+    }
+}
+
+
+.password-input-container {
+    width: 100%;
+    position: relative;
+}
+
+.password-input-container > input {
+    width: 100%;
+}
+
+.password-input {
+    user-select: none;
+    border: 1px solid black;
+}
+
+.password-toggle {
+    mask-position: center;
+    mask-repeat: no-repeat;
+    background-color: #e38d2d;
+    z-index: 3;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    border-radius: 50%;
+    top: calc((54px - 30px) / 2);
+    right: 15px;
+}
+
+.password-toggle::after{
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    z-index: 4;
+    right: calc((30px - 40px) / 2);
+    top: calc((30px - 40px) / 2);
+    content: '';
+}
+
+.password-toggle:hover::after {
+    cursor: pointer;
+    background-color: #9f631f;
+}

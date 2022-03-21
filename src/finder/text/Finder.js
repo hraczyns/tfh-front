@@ -1,4 +1,4 @@
-import './style.css';
+import './finder.css';
 import DropdownSearchSelection from "../../dropdownsearchselection/DropdownSearchSelection";
 import {useEffect, useState} from "react";
 import {useHistory} from "react-router-dom";
@@ -23,8 +23,7 @@ const Finder = () => {
                 } catch (e) {
                 }
             }
-        )
-        ();
+        )();
     }, [])
 
     const findTrip = (e) => {

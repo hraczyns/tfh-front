@@ -1,5 +1,5 @@
-import {useTable} from 'react-table'
-import './style.css'
+import {useTable} from 'react-table';
+import './table.css'
 
 
 const Table = ({columns, data, onClick, isActive}) => {
@@ -31,8 +31,8 @@ const Table = ({columns, data, onClick, isActive}) => {
         ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-        {rows.map((row, i) => {
-            prepareRow(row)
+        {rows.map((row) => {
+            prepareRow(row);
             return (
                 <tr {...row.getRowProps()}>
                     {row.cells.map(cell => {

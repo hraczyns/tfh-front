@@ -1,8 +1,8 @@
-import ReservationService from "../rest/functionalities/ReservationService";
+import reservationService from "../rest/functionalities/ReservationService";
 import {loadStripe} from "@stripe/stripe-js";
 import paymentService from "../rest/functionalities/PaymentService";
 import {useEffect, useState} from "react";
-import './style.css'
+import './payment.css'
 import Navigation from "../navigation/Navigation";
 import PaymentSummarySection from "./PaymentSummarySection";
 import Loading from "../loading/Loading";
@@ -40,7 +40,7 @@ const Payment = ({history}) => {
             let data;
             try {
                 const body = getBody(history);
-                data = await paymentService.createPaymentIntent(ReservationService.prepareReservation(body));
+                data = await paymentService.createPaymentIntent(reservationService.prepareReservation(body));
             } catch (e) {
                 setError(e.message);
             } finally {

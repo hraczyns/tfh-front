@@ -1,0 +1,115 @@
+.user-wrapper {
+    min-height: 100vh;
+    width: 100%;
+    background-color: #eee;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Barlow Condensed', sans-serif;
+}
+
+.user-main {
+    margin-top: 100px;
+    margin-bottom: 100px;
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 2px 2px #e38d2d;
+
+}
+
+.user-header-wrapper {
+    border-radius: 10px 10px 0 0;
+    width: 100%;
+    padding: 20px;
+    background-color: #e38d2d;
+}
+
+.user-header {
+    color: #eee;
+    text-align: center;
+    font-size: 50px;
+    background-color: #e38d2d;
+}
+
+.user-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-form-element {
+    margin: 5px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.user-form-element > * {
+    margin-bottom: 5px;
+}
+
+.user-input {
+    padding: 10px;
+    color: #e38d2d;
+}
+
+.user-input::placeholder {
+    opacity: 0.5;
+    font-family: 'Barlow Condensed', sans-serif;
+}
+
+.user-btn {
+    margin: 10px auto;
+    min-width: 30%;
+    background-color: #e38d2d;
+    border: 1px solid #a0631e;
+    border-radius: 10px;
+    padding: 20px;
+    color: #eee;
+    font-family: 'Barlow Condensed', sans-serif;
+    transition: transform 0.3s;
+}
+
+.user-login-error{
+    color: red;
+}
+
+.user-btn:hover {
+    background-color: #a0631e;
+    transform: scale(1.05);
+}
+
+.user-btn:disabled {
+    background-color: #ccc;
+}
+
+.signup-post-actions-wrapper {
+    height: 100vh;
+    width: 100%;
+    background-color: #eee;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Barlow Condensed', sans-serif;
+}
+
+.signup-post-actions-wrapper > header {
+    font-size: 40px;
+    text-align: center;
+    padding-top: 100px;
+}
+
+.signup-post-actions-wrapper > div {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    font-size: 32px;
+    margin: 20px;
+}
+
+.signup-post-actions-wrapper > div > a{
+    margin: 20px;
+}
+

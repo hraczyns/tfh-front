@@ -1,6 +1,6 @@
 import Table from '../table/Table'
-import {useEffect, useMemo, useState} from "react";
-import './style.css'
+import {useEffect, useState} from "react";
+import './findresults.css'
 import LinkButton from "../utils/LinkButton";
 import RouteResultsElement from '../routeelementskeeper/RouteResultsElement'
 import Loading from "../loading/Loading";
@@ -8,33 +8,7 @@ import findResultsMapper from "./FindResultsMapper";
 import resultsService from "../rest/functionalities/ResultsService";
 import PriceService from "../rest/functionalities/PriceService";
 import priceServiceParams from "./PriceServiceParams";
-
-const COLUMNS = [
-    {
-        Header: '',
-        accessor: 'no_content'
-    },
-    {
-        Header: 'From',
-        accessor: 'start'
-    },
-    {
-        Header: 'To',
-        accessor: 'end'
-    },
-    {
-        Header: 'Arrival',
-        accessor: 'arrivalTime'
-    },
-    {
-        Header: 'Departure',
-        accessor: 'departureTime'
-    },
-    {
-        Header: 'Train',
-        accessor: 'train'
-    }
-];
+import {RESULTS_COLUMNS} from "../table/TableColumnsConst";
 
 const NOT_EXISTING_TRAIN_ID = -1;
 
@@ -53,7 +27,6 @@ const FindResultsHome = ({history}) => {
     const [saveResults, setSavedResults] = useState([]);
     const [resultsJson, setResultsJson] = useState({});
     const [isLoading, setIsLoading] = useState(true);
-    const columns = useMemo(() => COLUMNS, []);
 
     const {source, destination, startTime} = history?.location?.state;
 
@@ -182,7 +155,7 @@ const FindResultsHome = ({history}) => {
     }
 
     const tableResults = () => {
-        return processResults().map((result, index) => <Table key={index} columns={columns}
+        return processResults().map((result, index) => <Table key={index} columns={RESULTS_COLUMNS}
                                                               data={result.map(el => el.result)}
                                                               onClick={() => chooseRoute(result, index)}
                                                               isActive={tableIndex === index}/>)

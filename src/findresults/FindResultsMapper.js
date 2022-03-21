@@ -1,11 +1,12 @@
 import ReactHtmlParser from "react-html-parser";
+import {checkDate} from "../utils/DateUtil";
 
 const findResultsMapper = {
     mapResponseToMainInfo: (stopTime, trainImg) => {
         return {
             start: stopTime?.start.cityDto.name,
-            arrivalTime: checkDate(stopTime?.start.departureTime),
-            departureTime: checkDate(stopTime?.end.arrivalTime),
+            departureTime: checkDate(stopTime?.start.departureTime),
+            arrivalTime: checkDate(stopTime?.end.arrivalTime),
             end: stopTime?.end.cityDto.name,
             train: ReactHtmlParser(trainImg)
         };
@@ -39,7 +40,5 @@ const findResultsMapper = {
         }
     }
 }
-
-const checkDate = json => json.length > 20 ? '-' : json.replace('T', ' ');
 
 export default findResultsMapper;

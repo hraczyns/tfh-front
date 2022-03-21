@@ -1,4 +1,4 @@
-import './style.css'
+import './routekeeper.css'
 import ClientSideTempCalculations from '../utils/ClientSideTempCalculations'
 
 const RouteResultsElement = ({
@@ -13,7 +13,6 @@ const RouteResultsElement = ({
                                  passengers
                              }) => {
     let className = "routekeeper__details";
-
     if (setNonBottomFromLast) {
         className = "routekeeper__details routekeeper__details-not-line"
     }
@@ -37,7 +36,7 @@ const RouteResultsElement = ({
     const getDiscountedPriceDiv = passenger => {
        return <div>
             <span className={"routekeeper__crossed-line"}>{price} zl </span>
-            {ClientSideTempCalculations().getPriceAfterDiscount(price,passenger?.discount)} zl
+            {ClientSideTempCalculations().getPriceAfterDiscount(price,passenger?.discount?.value)} zl
         </div>
     }
 
@@ -45,7 +44,7 @@ const RouteResultsElement = ({
     let prices = <div className={"routekeeper__details-element"}>
         <div>{priceLabel}</div>
         <div>
-            {passengers && passengers[0]?.discount !== '' ? getDiscountedPriceDiv(passengers[0]) : `${price} zl`}
+            {passengers && passengers[0]?.discount?.value !== '' ? getDiscountedPriceDiv(passengers[0]) : `${price} zl`}
         </div>
     </div>;
 
@@ -57,15 +56,15 @@ const RouteResultsElement = ({
         </div>];
         for (let i = 0; i < passengers.length; i++) {
             const passenger = passengers[i];
-            let person = passenger.name + ' ' + passenger.surname;
-            if (person.trim() === '') {
+            let person = passenger.name?.value + ' ' + passenger.surname?.value;
+            if (!person.trim()) {
                 person = 'Person n.' + (i + 1);
             }
             const element = <div key={i}
                 className={"routekeeper__details-element routekeeper__details-element--priceElement"}>
                 <div>{person}</div>
                 <div>
-                    {passenger.discount !== '' ? getDiscountedPriceDiv(passenger) : `${price} zl`}
+                    {passenger.discount?.value !== '' ? getDiscountedPriceDiv(passenger) : `${price} zl`}
                 </div>
             </div>
             prices.push(element);

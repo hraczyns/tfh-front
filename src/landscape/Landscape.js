@@ -1,5 +1,5 @@
 import React from "react";
-import './style.css'
+import './landscape.css'
 
 const Landscape = () => {
     return <div className={"landscape__container"}>

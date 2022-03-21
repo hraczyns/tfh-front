@@ -1,13 +1,12 @@
 import Navigation from "../../navigation/Navigation";
 import RouteResultsElement from "../../routeelementskeeper/RouteResultsElement";
-import './style.css'
+import './reservenow.css'
 import DropdownSearchSelection from "../../dropdownsearchselection/DropdownSearchSelection";
 import {useEffect, useState} from "react";
-import ReservationService from "../../rest/functionalities/ReservationService";
+import reservationService from "../../rest/functionalities/ReservationService";
 import ClientSideTempCalculations from '../../utils/ClientSideTempCalculations'
-import RequiredInput from "../../utils/RequiredInput";
+import ValidatedInput from "../../utils/ValidatedInput";
 import LinkButton from "../../utils/LinkButton";
-import EmailValidator from "../../utils/EmailValidator";
 import {reserveNowMapper} from "./ReserveNowMapper";
 
 const NAME = 'name';
@@ -23,18 +22,32 @@ const EMPTY_OPTION = {
 const ReserveNow = ({history}) => {
     const [isReady, setReady] = useState(false)
     const [options, setOptions] = useState([]);
+    const [passengers, setPassengers] = useState([{
+        name: {
+            value: '',
+            isValid: false
+        },
+        surname: {
+            value: '',
+            isValid: false
+        },
+        email: {
+            value: '',
+            isValid: false
+        },
+        discount: {
+            value: '',
+            isValid: true
+        },
+    }]);
     const parsed = JSON.parse(sessionStorage.getItem(history.location.state));
-    if (!parsed) {
-        history.replace('/results');
-    }
     const {route} = parsed;
-
     const calculator = new ClientSideTempCalculations();
 
     useEffect(() => {
         (async () => {
-            const possibleDiscounts = await ReservationService.getPossibleDiscounts();
-            const opts = [EMPTY_OPTION];
+            const possibleDiscounts = await reservationService.getPossibleDiscounts();
+            const opts = [{...EMPTY_OPTION}];
             for (const [key, value] of Object.entries(possibleDiscounts)) {
                 opts.push({
                     key: key,
@@ -91,19 +104,20 @@ const ReserveNow = ({history}) => {
             {generalPrice}
         </div>;
     }
+
     const getGeneralPrice = prices => {
         let sumArray = [];
         let sumDiscountedPrices = [];
         passengers.forEach((passenger, index) => {
-            let person = passenger.name + ' ' + passenger.surname;
+            let person = passenger.name?.value + ' ' + passenger.surname?.value;
             if (person.trim() === '') {
                 person = 'Person n.' + (index + 1);
             }
-            const sumForPassenger = calculator.getSumForPassenger(prices, passenger.discount);
+            const sumForPassenger = calculator.getSumForPassenger(prices, passenger.discount?.value);
             sumDiscountedPrices.push(sumForPassenger);
             sumArray.push(<div className={"reservenow__price-summary reservenow__price-summary--element"}>
                 <div>{person}</div>
-                {passenger.discount !== '' ? (<div>
+                {passenger.discount?.value !== '' ? (<div>
                         <span className={"reservenow__crossed-line"}>{calculator.sum(prices)} zl </span>
                         {sumForPassenger}
                     </div>)
@@ -122,19 +136,18 @@ const ReserveNow = ({history}) => {
         </section>;
     }
 
-
     const handleChange = (e, index, valueFromDropdown) => {
         const controlName = e.target.name;
         const passenger = passengers[index];
         if (controlName === NAME) {
-            passenger.name = e.target.value;
+            passenger.name.value = e.target?.value;
         } else if (controlName === SURNAME) {
-            passenger.surname = e.target.value;
+            passenger.surname.value = e.target?.value;
         } else if (controlName === EMAIL) {
-            passenger.email = e.target.value;
+            passenger.email.value = e.target?.value;
         } else {
             if (valueFromDropdown) {
-                passenger.discount = options.filter(s => s.value === valueFromDropdown.value)
+                passenger.discount.value = options.filter(s => s?.value === valueFromDropdown?.value)
                     .map(s => s.key)[0];
             }
         }
@@ -143,29 +156,31 @@ const ReserveNow = ({history}) => {
         setPassengers(passArray);
     }
 
-    const [passengers, setPassengers] = useState([{
-        name: '',
-        surname: '',
-        email: '',
-        discount: ''
-    }]);
+    const setValid = (name, isValid, index) => {
+        const passenger = passengers[index];
+        passenger[name].isValid = isValid;
+        const passArray = [...passengers];
+        passArray[index] = passenger;
+        setPassengers(passArray);
+    }
 
     const getRequiredDependsOnIsReady = (index, prop) => {
         if (prop === DISCOUNT) {
             return <DropdownSearchSelection className={"reservenow__form-input"} disabled={isReady}
                                             options={options}
                                             onSearchChange={(e, v) => handleChange(e, index, v)}
-                                            value={passengers[index] ? passengers[index].discount : ''}/>
+                                            value={passengers[index] ? passengers[index].discount?.value || '' : ''}/>
         }
         if (isReady) {
             return <label
-                className={"reservenow__form-confirmed"}>{passengers[index] ? passengers[index][prop] : ''}</label>
+                className={"reservenow__form-confirmed"}>{passengers[index] ? passengers[index][prop]?.value || '' : ''}</label>
         }
-        return <RequiredInput className={"reservenow__form-input"}
-                              value={passengers[index] ? passengers[index][prop] : ''}
-                              type={(prop === 'email' ? 'email' : "personalData")}
-                              name={prop} placeholder={`Type ${prop}`}
-                              onChange={e => handleChange(e, index)}/>
+        return <ValidatedInput className={"reservenow__form-input"}
+                               value={passengers[index] ? passengers[index][prop]?.value || '' : ''}
+                               type={(prop === "email" ? "email" : "personalData")}
+                               name={prop} placeholder={`Type ${prop}`}
+                               onChange={e => handleChange(e, index)}
+                               setValid={(name, isValid) => setValid(name, isValid, index)}/>
     }
 
     const getForm = index => {
@@ -196,7 +211,7 @@ const ReserveNow = ({history}) => {
             </form>
         </div>
     }
-
+    //
     const deleteForm = (index) => {
         setPassengersForm(prev => [...prev].filter((f, indexOfForm) => indexOfForm !== index));
         setPassengers(prev => [...prev].filter((p, indexOfForm) => indexOfForm !== index))
@@ -205,15 +220,27 @@ const ReserveNow = ({history}) => {
     const addPassengerForm = () => {
         setPassengersForm(prev => [...prev, getForm()]);
         setPassengers(prev => [...prev, {
-            name: '',
-            surname: '',
-            email: '',
-            discount: ''
-        }])
+            name: {
+                value: '',
+                isValid: false
+            },
+            surname: {
+                value: '',
+                isValid: false
+            },
+            email: {
+                value: '',
+                isValid: false
+            },
+            discount: {
+                value: '',
+                isValid: true
+            }
+        }]);
     }
 
     const [passengersForm, setPassengersForm] = useState([getForm()]);
-
+    //
     const getPassengers = () => {
         return <div className={"reservenow__form-wrapper-for-all"}>
             {passengersForm.map((el, index) => {
@@ -235,17 +262,29 @@ const ReserveNow = ({history}) => {
     const hasErrors = () => {
         let errors = false;
         passengers.forEach(({name, surname, email}) => {
-            if (!name || !surname || !email || name === '' || surname === '' || email === '' || !EmailValidator.isValid(email)) {
+            if (!name?.isValid || !surname?.isValid || !email?.isValid) {
                 errors = true;
             }
         });
+
         return errors;
     }
 
+
     const getReservationBtn = () => {
+        const copy = [];
+        for (const {name, surname, email, discount} of passengers) {
+            copy.push({
+                name: name.value,
+                surname: surname.value,
+                email: email.value,
+                discount: discount.value
+            })
+        }
+
         const objToSend = {
             route: route,
-            passengers: passengers
+            passengers: copy
         }
         return <div className={"reservenow__reservebtn-wrapper"}>
             {isReady ?

@@ -1,5 +1,5 @@
 import Finder from "../finder/text/Finder";
-import './style.css'
+import './mainhome.css'
 import LinkButton from "../utils/LinkButton";
 
 const MainHome = () => {
