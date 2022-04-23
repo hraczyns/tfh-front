@@ -50,7 +50,7 @@ const RouteResultsElement = ({
 
     if (passengers && passengers.length > 1) {
 
-        prices = [<div className={"routekeeper__details-element"} key={0}>
+        prices = [<div className={"routekeeper__details-element"} key={Math.random()}>
             <div>{priceLabel}</div>
             <div/>
         </div>];
@@ -71,7 +71,7 @@ const RouteResultsElement = ({
         }
     }
 
-    return <article className={className}>
+    return <article className={className} key={`${startCity} - ${endCity} `}>
         <div className={"routekeeper__details-element"}>
             {`${startCity} - ${endCity} `}
         </div>

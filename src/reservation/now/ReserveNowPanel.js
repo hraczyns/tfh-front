@@ -19,20 +19,20 @@ const EMPTY_OPTION = {
     text: ''
 }
 
-const ReserveNow = ({history}) => {
+const ReserveNowPanel = ({route, user : {id: userId, name: userName, surname: userSurname, email: userEmail}}) => {
     const [isReady, setReady] = useState(false)
     const [options, setOptions] = useState([]);
     const [passengers, setPassengers] = useState([{
         name: {
-            value: '',
+            value: userName || '',
             isValid: false
         },
         surname: {
-            value: '',
+            value: userSurname || '',
             isValid: false
         },
         email: {
-            value: '',
+            value: userEmail || '',
             isValid: false
         },
         discount: {
@@ -40,8 +40,6 @@ const ReserveNow = ({history}) => {
             isValid: true
         },
     }]);
-    const parsed = JSON.parse(sessionStorage.getItem(history.location.state));
-    const {route} = parsed;
     const calculator = new ClientSideTempCalculations();
 
     useEffect(() => {
@@ -115,7 +113,7 @@ const ReserveNow = ({history}) => {
             }
             const sumForPassenger = calculator.getSumForPassenger(prices, passenger.discount?.value);
             sumDiscountedPrices.push(sumForPassenger);
-            sumArray.push(<div className={"reservenow__price-summary reservenow__price-summary--element"}>
+            sumArray.push(<div key={index} className={"reservenow__price-summary reservenow__price-summary--element"}>
                 <div>{person}</div>
                 {passenger.discount?.value !== '' ? (<div>
                         <span className={"reservenow__crossed-line"}>{calculator.sum(prices)} zl </span>
@@ -171,9 +169,9 @@ const ReserveNow = ({history}) => {
                                             onSearchChange={(e, v) => handleChange(e, index, v)}
                                             value={passengers[index] ? passengers[index].discount?.value || '' : ''}/>
         }
-        if (isReady) {
-            return <label
-                className={"reservenow__form-confirmed"}>{passengers[index] ? passengers[index][prop]?.value || '' : ''}</label>
+        if (isReady || (index === 0 && userEmail)) {
+            return <label key={index}
+                          className={"reservenow__form-confirmed"}>{passengers[index] ? passengers[index][prop]?.value || '' : ''}</label>
         }
         return <ValidatedInput className={"reservenow__form-input"}
                                value={passengers[index] ? passengers[index][prop]?.value || '' : ''}
@@ -183,7 +181,7 @@ const ReserveNow = ({history}) => {
                                setValid={(name, isValid) => setValid(name, isValid, index)}/>
     }
 
-    const getForm = index => {
+    const getForm = (index) => {
         return <div className={"reservenow__form-wrapper"} key={index}>
             <form className={"reservenow__form"}>
                 <button className={"reservenow__form-cancel"} disabled={index === 0}
@@ -211,7 +209,7 @@ const ReserveNow = ({history}) => {
             </form>
         </div>
     }
-    //
+
     const deleteForm = (index) => {
         setPassengersForm(prev => [...prev].filter((f, indexOfForm) => indexOfForm !== index));
         setPassengers(prev => [...prev].filter((p, indexOfForm) => indexOfForm !== index))
@@ -240,14 +238,14 @@ const ReserveNow = ({history}) => {
     }
 
     const [passengersForm, setPassengersForm] = useState([getForm()]);
-    //
+
     const getPassengers = () => {
         return <div className={"reservenow__form-wrapper-for-all"}>
             {passengersForm.map((el, index) => {
                 if (index === passengersForm.length - 1) {
                     return (
                         <div key={index}>
-                            <div className={"reservenow__form-section"}>
+                            <div key={index} className={"reservenow__form-section"}>
                                 {getForm(index)}
                             </div>
                             {getAddBtn()}
@@ -261,7 +259,10 @@ const ReserveNow = ({history}) => {
 
     const hasErrors = () => {
         let errors = false;
-        passengers.forEach(({name, surname, email}) => {
+        passengers.forEach(({name, surname, email}, index) => {
+            if (index === 0 && userEmail) {
+                return;
+            }
             if (!name?.isValid || !surname?.isValid || !email?.isValid) {
                 errors = true;
             }
@@ -270,21 +271,27 @@ const ReserveNow = ({history}) => {
         return errors;
     }
 
-
     const getReservationBtn = () => {
         const copy = [];
+        const existingUsers = [];
         for (const {name, surname, email, discount} of passengers) {
-            copy.push({
+            const passenger = {
                 name: name.value,
                 surname: surname.value,
                 email: email.value,
                 discount: discount.value
-            })
+            };
+            if (email.value === userEmail) {
+                existingUsers.push({...passenger, userId});
+            } else {
+                copy.push(passenger);
+            }
         }
 
         const objToSend = {
             route: route,
-            passengers: copy
+            passengers: copy,
+            existingUsers: existingUsers
         }
         return <div className={"reservenow__reservebtn-wrapper"}>
             {isReady ?
@@ -313,4 +320,4 @@ const ReserveNow = ({history}) => {
     </div>
 }
 
-export default ReserveNow;
+export default ReserveNowPanel;

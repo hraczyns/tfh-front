@@ -7,7 +7,7 @@ const isPotentiallyLoggedIn = () => {
     return Cookies.get("cookieHeaderPayload");
 }
 
-export default function useAuthCheck() {
+export default function useAuthCheck(deps) {
     const [user, setUser] = useState(null);
     const [role, setRole] = useState(null);
     const {setUser: setUserFromContext} = useContext(UserContext);
@@ -19,12 +19,11 @@ export default function useAuthCheck() {
         (async () => {
             try {
                 const response = await userService.authCheck();
-                if (response && response.username && response.role) {
-                    console.log(response);
-                    setUser(response.username);
+                if (response && response.email && response.role) {
+                    setUser(response.email);
                     setRole(response.role);
-                    setUserFromContext(response.username);
-                    localStorage.setItem("fastGetUser", response.username);
+                    setUserFromContext(response.email);
+                    localStorage.setItem("fastGetUser", response.email);
                 }
             } catch (e) {
                 localStorage.removeItem("fastGetUser");
@@ -35,7 +34,7 @@ export default function useAuthCheck() {
                 Cookies.remove("cookieHeaderPayload");
             }
         })();
-    }, [setUserFromContext]);
+    }, [setUserFromContext, deps]);
     return {
         user,
         setUser,

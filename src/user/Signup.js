@@ -64,7 +64,6 @@ const Signup = () => {
                 data.username.value,
                 data.password.value,
             );
-
             history.push("/");
         } catch (e) {
         }

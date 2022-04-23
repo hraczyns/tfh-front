@@ -70,3 +70,22 @@ export const PASSENGERS_COLUMNS = [
         accessor: 'price'
     }
 ];
+
+export const RESERVATIONS_WHEN_LOGGED = [
+    {
+        Header: 'From',
+        accessor: 'from'
+    },
+    {
+        Header: 'To',
+        accessor: 'to'
+    },
+    {
+        Header: 'Date',
+        accessor: 'date'
+    },
+    {
+        Header: 'Action',
+        accessor: 'action'
+    }
+]

@@ -6,13 +6,14 @@ const GET_ALL_DISCOUNTS = '/api/reservations/discounts/all';
 const ADD_RESERVATION = '/api/reservations';
 const GET_RESERVATION = '/api/reservations';
 const GET_RESERVATION_TICKET = '/api/reservations/content';
+const GET_RESERVATION_PASSENGER_ID = '/api/reservations';
 
 const reservationService = {
     getPossibleDiscounts: (onSuccess) => {
         return restService.get(GET_ALL_DISCOUNTS, onSuccess);
     },
     prepareAndSaveReservation: object => {
-        const objectToSend = prepareReservation(object)
+        const objectToSend = prepareReservation(object);
         return restService.post(ADD_RESERVATION, objectToSend);
     },
     prepareReservation: object => {
@@ -23,15 +24,17 @@ const reservationService = {
     },
     getContentByReservationIdentifierAndEmail: (identifier, email) => {
         return restService.get(GET_RESERVATION_TICKET + "?identifier=" + identifier + "&email=" + email, RestServiceMode.PURE_RESPONSE);
+    },
+    getReservationsById: (passId) => {
+        return restService.get(GET_RESERVATION_PASSENGER_ID + "/passengers/" + passId);
     }
 }
 
 const prepareReservation = object => {
     if (!object || !object.passengers || !object.route) {
-        alert("Bad")
-        throw new Error("");
+        throw new Error("Internal error");
     }
-    return ReservationAndPaymentUtil.prepareReservationObject(object.route, object.passengers);
+    return ReservationAndPaymentUtil.prepareReservationObject(object.route, object.passengers, object.existingUsers);
 }
 
 export default reservationService;

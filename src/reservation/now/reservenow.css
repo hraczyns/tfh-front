@@ -101,7 +101,7 @@
 }
 
 .reservenow__form-cancel:hover {
-   transform: scale(1.3);
+    transform: scale(1.3);
 }
 
 .reservenow__form-header {
@@ -179,4 +179,59 @@
 .reservenow__form-confirmed {
     padding: 10px;
     color: #e38d2d;
+}
+
+.reserve-now-pre-on-login-panel-wrapper{
+    width: 100%;
+    height: 100vh;
+    background-color: #eee;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Barlow Condensed', sans-serif;
+}
+
+.reserve-now-pre-on-login-panel-wrapper > * {
+    margin: 50px;
+}
+
+.reserve-now-pre-on-login-header{
+    font-size: 50px;
+    color: #e38d2d;
+}
+
+.reserve-now-pre-on-login-panel {
+    background-color: #eee;
+    display: flex;
+    width: 80%;
+    justify-content: center;
+    align-items: center;
+    font-size: 42px;
+}
+
+.reserve-now-pre-on-login-panel > * {
+    flex-basis: 100%;
+    text-align: center;
+}
+
+.reserve-now-pre-on-login-panel button {
+    margin-top: 50px;
+    padding: 8px 16px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 40px;
+    border: 1px solid black;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+
+.reserve-now-pre-on-login-panel button:hover {
+    background-color: #e38d2d;
+    color: #eee;
+}
+
+.reserve-now-pre-on-login-delimiter {
+    border-right: 1px solid black;
+    flex: 1;
+    height: 50vh;
 }

@@ -34,14 +34,14 @@ const getRouteTable = (reservedRoute) => {
 
 const getPassengersTable = (passengers, passengersNotRegistered, prices) => {
     const data = [];
-    for (const {name, surname} of passengers) {
+    for (const {passenger: {name, surname}} of passengers) {
         const priceArray = prices.filter(price => price.name === name && price.surname === surname);
         if (priceArray.length > 0) {
             const {price, discount} = priceArray[0];
             data.push({
                 name: name,
                 surname: surname,
-                price: price,
+                price: price.toFixed(2),
                 discount: discount || "-"
             });
         }

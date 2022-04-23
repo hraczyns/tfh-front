@@ -1,5 +1,5 @@
 const constApi = {
-    apiUrl: 'http://localhost:8084'
+    apiUrl: 'http://localhost:8080'
 }
 
 export default constApi;

@@ -5,19 +5,14 @@ import {useContext} from "react";
 import {UserContext} from "../context/UserContext";
 import {logout} from "../user/logoutUtil";
 
-// const UNDEFINED = "undefined";
-
-// const isUserInStorage = () => {
-//     return localStorage.getItem("fastGetUser") && localStorage.getItem("fastGetUser") !== UNDEFINED && Cookies.get("cookieHeaderPayload");
-// }
 
 const Navigation = () => {
-    const {user} = useAuthCheck();
     const {user: userFromContext, setUser: setUserFromContext} = useContext(UserContext);
+    const {user} = useAuthCheck();
     const history = useHistory();
 
     const content = () => {
-        if (user || userFromContext) { //|| isUserInStorage()) {
+        if (user || userFromContext) {
             return <>
                 <button className={"navigation__user-btn navigation__user-btn--account"}
                         onClick={() => history.push('/login')}>Account
@@ -25,8 +20,11 @@ const Navigation = () => {
                 <button
                     className={"navigation__user-btn navigation__user-btn--logout"}
                     onClick={() => {
-                        logout();
-                        setUserFromContext(null);
+                        logout()
+                            .then(() => {
+                                setUserFromContext(null);
+                                window.location.reload();
+                            });
                     }}>Logout
                 </button>
             </>

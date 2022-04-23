@@ -47,8 +47,8 @@
     transition: transform 0.3s;
 }
 
-.navigation__user-btn:hover {
-    transform: scale(1.05);
+.navigation__user-btn:hover{
+    cursor: pointer;
 }
 
 .navigation__user-avatar{

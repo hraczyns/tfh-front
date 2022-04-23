@@ -5,7 +5,7 @@ import userService from "../rest/functionalities/UserService";
 import {useHistory} from "react-router-dom";
 import {UserContext} from "../context/UserContext";
 
-const Login = () => {
+const Login = ({onClickLogin}) => {
     const [data, setData] = useState({
         username: '',
         password: ''
@@ -32,7 +32,8 @@ const Login = () => {
             );
             setUser(data.username);
             setError("");
-            history.push("/");
+            !onClickLogin && history.push("/");
+            onClickLogin && onClickLogin();
         } catch (e) {
             setError("Incorrect username or password");
         }

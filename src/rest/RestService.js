@@ -7,7 +7,6 @@ const POSITIVE_STATUSES = [200, 201, 204];
 const restService = {
     get: async (url, mode = RestServiceMode.DEFAULT) => {
         const result = await fetch(constApi.apiUrl + url, {
-            // credentials: "same-origin",
             credentials: "include",
             headers: {
                 "X-XSRF-TOKEN": Cookies.get("XSRF-TOKEN"),
@@ -19,7 +18,6 @@ const restService = {
     delete: async (url, mode = RestServiceMode.DEFAULT) => {
         const result = await fetch(constApi.apiUrl + url, {
             method: "DELETE",
-            // credentials: "same-origin",
             credentials: "include",
             headers: {
                 "X-XSRF-TOKEN": Cookies.get("XSRF-TOKEN")
@@ -49,7 +47,6 @@ const sendWithBody = async (url, body, method, mode, isXwwwEncoded) => {
     }
     const result = await fetch(constApi.apiUrl + url, {
         method: "POST" || method,
-        // credentials: "same-origin",
         credentials: "include",
         body: body,
         headers: {
@@ -73,12 +70,6 @@ const getWithMode = (result, mode) => {
         default:
             return result.json();
     }
-}
-
-const handleError = ({err}) => {
-    console.log("error happened")
-    console.log(err)
-    // window.location.replace('server-error.html')
 }
 
 const checkErrors = (data) => {

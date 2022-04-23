@@ -2,8 +2,11 @@ import {useEffect, useRef, useState} from "react";
 import {useHistory} from "react-router-dom";
 import './reservation.css';
 import ValidatedInput from "../../utils/ValidatedInput";
+import {useUserData} from "../../hook/useUserData";
+import ReservationTable from "./ReservationTable";
 
 const ReservationFinder = () => {
+    const {id} = useUserData();
     const ref = useRef();
     const params = new URLSearchParams(window.location.search);
 
@@ -28,6 +31,10 @@ const ReservationFinder = () => {
         });
     };
 
+    const showTableIfLogged = (id) => {
+        if (!id) return;
+        return <ReservationTable passengerId = {id}/>
+    }
 
     return <main className={"reservation-finder-wrapper"}>
         <section className={"reservation-finder"}>
@@ -54,6 +61,7 @@ const ReservationFinder = () => {
                 reservation
             </button>
         </section>
+        {showTableIfLogged(id)}
     </main>
 };
 

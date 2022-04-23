@@ -9,7 +9,7 @@ const userService = {
             username: username,
             password: password
         }
-        return restService.post('/api/register', object);
+        return restService.post('/api/register', object, RestServiceMode.TEXT);
     },
     verifyAccount: (token) => {
         return restService.post('/api/verification-token?token=' + token);

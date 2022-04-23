@@ -1,7 +1,6 @@
 import {useTable} from 'react-table';
 import './table.css'
 
-
 const Table = ({columns, data, onClick, isActive}) => {
     const {
         getTableProps,
