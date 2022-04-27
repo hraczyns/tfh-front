@@ -46,7 +46,7 @@ const Navigation = () => {
             <ul className={"navigation__list-element"}
                 onClick={() => history.push('/reservations/search')}>Reservations
             </ul>
-            <ul className={"navigation__list-element"}>Statistics</ul>
+            <ul className={"navigation__list-element"} onClick={() => history.push('/information')}>Information</ul>
             <ul className={"navigation__list-element"}>About</ul>
         </li>
         <div className={"navigation__user"}>

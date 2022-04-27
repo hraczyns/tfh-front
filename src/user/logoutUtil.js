@@ -8,6 +8,5 @@ export const logout = async () => {
         Cookies.remove("cookieHeaderPayload");
         localStorage.removeItem("fastGetUser");
     } catch (e) {
-        console.log(e);
     }
 }

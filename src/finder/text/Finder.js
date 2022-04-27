@@ -6,6 +6,20 @@ import CityService from "../../rest/functionalities/CityService";
 
 const NOT_CHOSEN = -1;
 
+const parseCityData = input => {
+    if (input?._embedded?.cityDtoList) {
+        const arr = [...input._embedded.cityDtoList];
+        return arr.map(rec => {
+            return {
+                key: rec.id,
+                value: rec.name,
+                text: rec.name
+            }
+        })
+    }
+    return [];
+}
+
 const Finder = () => {
     const history = useHistory();
     const [cities, setCities] = useState([]);
@@ -54,20 +68,6 @@ const Finder = () => {
                 'startTime': e.target.value
             }))
         }
-    }
-
-    const parseCityData = input => {
-        if (input?._embedded?.cityDtoList) {
-            const arr = [...input._embedded.cityDtoList];
-            return arr.map(rec => {
-                return {
-                    key: rec.id,
-                    value: rec.name,
-                    text: rec.name
-                }
-            })
-        }
-        return [];
     }
 
     return <div className={"finder__container"}>

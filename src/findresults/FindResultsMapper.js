@@ -1,14 +1,20 @@
-import ReactHtmlParser from "react-html-parser";
 import {checkDate} from "../utils/DateUtil";
+import constApi from "../rest/ConstApi";
 
 const findResultsMapper = {
-    mapResponseToMainInfo: (stopTime, trainImg) => {
+    mapResponseToMainInfo: (stopTime) => {
         return {
             start: stopTime?.start.cityDto.name,
             departureTime: checkDate(stopTime?.start.departureTime),
             arrivalTime: checkDate(stopTime?.end.arrivalTime),
             end: stopTime?.end.cityDto.name,
-            train: ReactHtmlParser(trainImg)
+            train: <div className={"findresultshome__train_image-wrapper"}>
+                <span>{stopTime?.train.model}</span>
+                <img className={"findresultshome__train_image"}
+                                       src={constApi.apiUrl + "/api/trains/images?train_id=" + stopTime?.train.id}
+                                       alt={""}/>
+            </div>
+
         };
     },
     mapResponseToAdditionalInfo: (stopTime, resultsJson) => {
@@ -36,7 +42,8 @@ const findResultsMapper = {
             startCity: fragmentOfTableContent.result.start,
             endCity: fragmentOfTableContent.result.end,
             trainName: fragmentOfTableContent.additionalData.trainName,
-            trainModel: fragmentOfTableContent.additionalData.trainModel
+            trainModel: fragmentOfTableContent.additionalData.trainModel,
+            trainUniqueName: fragmentOfTableContent.additionalData.trainUniqueName
         }
     }
 }

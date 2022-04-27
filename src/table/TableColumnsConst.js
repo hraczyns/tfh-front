@@ -89,3 +89,72 @@ export const RESERVATIONS_WHEN_LOGGED = [
         accessor: 'action'
     }
 ]
+
+export const TIMETABLE = [
+    {
+        Header: 'Departure time',
+        accessor: 'departureTime'
+    },
+    {
+        Header: 'To',
+        accessor: 'to'
+    },
+    {
+        Header: 'Arrival time at destination',
+        accessor: 'arrivalTimeDest'
+    },
+    {
+        Header: 'Train unique',
+        accessor: 'trainUnique'
+    },
+    {
+        Header: 'Train class',
+        accessor: 'trainClass'
+    },
+    {
+        Header: 'Redirect to whole trip',
+        accessor: 'redirectToTrip'
+    },
+    {
+        Header: 'Redirect to train',
+        accessor: 'redirectToTrain'
+    }
+]
+
+export const TRIP_COLUMNS = [
+    {
+        Header: 'From',
+        accessor: 'from'
+    },
+    {
+        Header: 'To',
+        accessor: 'to'
+    },
+    {
+        Header: 'Departure time',
+        accessor: 'departureTime'
+    },
+    {
+        Header: 'Arrival time',
+        accessor: 'arrivalTime'
+    }
+]
+
+export const TRAIN_COLUMNS = [
+    {
+        Header: 'From',
+        accessor: 'from'
+    },
+    {
+        Header: 'To',
+        accessor: 'to'
+    },
+    {
+        Header: 'Departure time',
+        accessor: 'departureTime'
+    },
+    {
+        Header: 'Arrival time',
+        accessor: 'arrivalTime'
+    }
+]

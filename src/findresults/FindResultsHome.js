@@ -10,8 +10,6 @@ import PriceService from "../rest/functionalities/PriceService";
 import priceServiceParams from "./PriceServiceParams";
 import {RESULTS_COLUMNS} from "../table/TableColumnsConst";
 
-const NOT_EXISTING_TRAIN_ID = -1;
-
 const extractRoutes = foundResults => foundResults?._embedded?.journeyDtoList.map(s => s.partOfJourneys) ?? [];
 
 const validate = json => json?._embedded?.journeyDtoList.every(s => s.resultId) ?? false;
@@ -43,8 +41,7 @@ const FindResultsHome = ({history}) => {
                 const generaleResultsArray = [];
                 for (const route of routes) {
                     for (const stopTime of route) {
-                        const trainImg = await resultsService.findTrainImg(stopTime?.train.id ?? NOT_EXISTING_TRAIN_ID);
-                        const resultObj = findResultsMapper.mapResponseToMainInfo(stopTime, trainImg);
+                        const resultObj = findResultsMapper.mapResponseToMainInfo(stopTime);
                         const additionalData = findResultsMapper.mapResponseToAdditionalInfo(stopTime, foundResults);
                         const resToSave = findResultsMapper.mapResponseToGeneralResults(resultObj, additionalData);
                         generaleResultsArray.push(resToSave);
@@ -92,7 +89,7 @@ const FindResultsHome = ({history}) => {
         if (tableContent.length !== 0) {
             const content = [...tableContent]
                 .map((frag, index) => {
-                    const {startCity, endCity, trainName, trainModel} = findResultsMapper.mapToTableFragment(frag);
+                    const {startCity, endCity, trainName, trainModel, trainUniqueName} = findResultsMapper.mapToTableFragment(frag);
                     let price = getPriceByStartAndStopId(frag);
                     if (!price) price = '0.0 zl';
                     return <RouteResultsElement
@@ -101,6 +98,7 @@ const FindResultsHome = ({history}) => {
                         endCity={endCity}
                         trainModel={trainModel}
                         trainName={trainName}
+                        trainUnique={trainUniqueName}
                         price={price}
                         setNonBottomFromLast={index === tableContent.length - 1}/>
                 });

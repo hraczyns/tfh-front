@@ -16,6 +16,9 @@ import Login from "./user/Login";
 import {useMemo, useState} from "react";
 import {UserContext} from "./context/UserContext";
 import ReserveNowPage from "./reservation/now/ReserveNowPage";
+import Information from "./information/Information";
+import TripInfo from "./information/details/TripInfo";
+import TrainInfo from "./information/details/TrainInfo";
 
 function App() {
     const [user, setUser] = useState(null);
@@ -40,6 +43,9 @@ function App() {
                         <Route path="/signup/after" exact component={SignupAfter}/>
                         <Route path="/signup/verification-token" exact component={SignupVerificationToken}/>
                         <Route path="/login" exact component={Login}/>
+                        <Route path="/information" exact component={Information}/>
+                        <Route path="/information/trips/:tripId" exact component={TripInfo}/>
+                        <Route path="/information/trains/:trainId" exact component={TrainInfo}/>
                         <Route component={NotFound}/>
                     </Switch>
                 </Router>

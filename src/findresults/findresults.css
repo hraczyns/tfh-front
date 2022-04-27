@@ -100,3 +100,14 @@
     justify-content: center;
     align-items: center;
 }
+
+.findresultshome__train_image {
+    width: 50%;
+}
+
+.findresultshome__train_image-wrapper{
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}

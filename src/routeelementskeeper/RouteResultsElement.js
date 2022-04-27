@@ -6,6 +6,7 @@ const RouteResultsElement = ({
                                  endCity,
                                  trainModel,
                                  trainName,
+                                 trainUnique,
                                  price,
                                  arrivalTime,
                                  departureTime,
@@ -34,9 +35,9 @@ const RouteResultsElement = ({
     }
 
     const getDiscountedPriceDiv = passenger => {
-       return <div>
+        return <div>
             <span className={"routekeeper__crossed-line"}>{price} zl </span>
-            {ClientSideTempCalculations().getPriceAfterDiscount(price,passenger?.discount?.value)} zl
+            {ClientSideTempCalculations().getPriceAfterDiscount(price, passenger?.discount?.value)} zl
         </div>
     }
 
@@ -61,7 +62,7 @@ const RouteResultsElement = ({
                 person = 'Person n.' + (i + 1);
             }
             const element = <div key={i}
-                className={"routekeeper__details-element routekeeper__details-element--priceElement"}>
+                                 className={"routekeeper__details-element routekeeper__details-element--priceElement"}>
                 <div>{person}</div>
                 <div>
                     {passenger.discount?.value !== '' ? getDiscountedPriceDiv(passenger) : `${price} zl`}
@@ -79,6 +80,10 @@ const RouteResultsElement = ({
         <div className={"routekeeper__details-element"}>
             <div>{'Train: '}</div>
             <div>{' ' + trainName}</div>
+        </div>
+        <div className={"routekeeper__details-element"}>
+            <div>{'Train unique name: '}</div>
+            <div>{' ' + trainUnique}</div>
         </div>
         <div className={"routekeeper__details-element"}>
             <div>{'Train class: '}</div>

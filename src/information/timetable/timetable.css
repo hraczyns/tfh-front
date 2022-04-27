@@ -1,0 +1,53 @@
+.timetable-pagination button, .timetable-pagination select {
+    font-family: 'Barlow Condensed', sans-serif;
+    padding: 6px;
+    border: 1px solid #e38d2d;
+    border-radius: 10px;
+    background-color: #fff;
+    color: #e38d2d;
+    transition: background 0.15s, color 0.15s;
+    cursor: pointer;
+}
+
+.timetable-pagination button:hover {
+    background-color: #e38d2d;
+    color: #fff;
+}
+
+.timetable-pagination {
+    font-size: 24px;
+    margin: 0 10px;
+}
+
+.timetable-pagination > *, .timetable-pagination select {
+    margin: 4px;
+    padding: 4px;
+}
+
+.timetable-pagination button:disabled {
+    background-color: #ccc;
+    cursor: default;
+}
+
+.timetable-pagination button:disabled:hover {
+    background-color: #ccc;
+    color: #e38d2d;
+}
+
+.timetable-pagination-wrapper {
+    display: flex;
+}
+
+.timetable-pagination select {
+    max-width: 15%;
+}
+
+.timetable-pagination-number {
+    color: #e38d2d;
+}
+
+.timetable-pagination-select {
+    padding: 2px;
+    font-family: 'Barlow Condensed', sans-serif;
+    color: #e38d2d;
+}

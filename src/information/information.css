@@ -1,0 +1,223 @@
+.information-timetable-wrapper {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    background-color: #eee;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Barlow Condensed', sans-serif;
+}
+
+.information-timetable {
+    margin-top: 100px;
+    width: 95%;
+    min-height: 70vh;
+}
+
+.information-timetable-finder {
+    width: 100%;
+}
+
+.information-timetable-finder > header {
+    text-align: center;
+    font-size: 32px;
+    padding: 10px;
+}
+
+.information-timetable-finder-search {
+    width: 70%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+}
+
+.information-timetable-finder-search > * {
+    flex: 1 1 auto;
+    margin: 10px;
+    font-family: 'Barlow Condensed', sans-serif;
+}
+
+.information-timetable-finder-search > input {
+    padding: 10px;
+}
+
+.information-timetable-finder-search * {
+    font-size: 24px;
+}
+
+.information-timetable-finder-search > button {
+    padding: 10px 30px;
+    border: 1px solid #e38d2d;
+    border-radius: 10px;
+    transition: background 0.15s, color 0.15s;
+    cursor: pointer;
+}
+
+.information-timetable-finder-search-btn-clear {
+    background-color: #e02450;
+    color: #fff;
+}
+
+
+.information-timetable-finder-search-btn-find, .information-timetable-finder-search-btn-clear:hover {
+    background-color: #fff;
+    color: #e38d2d;
+}
+
+.information-timetable-finder-search-btn-find:hover {
+    background-color: #e38d2d;
+    color: #fff;
+}
+
+.information-timetable-finder-search > button:disabled {
+    background-color: #ccc;
+}
+
+.information-timetable-finder-search-btn-find:disabled:hover {
+    color: #e38d2d;
+}
+
+.information-timetable-content table {
+    display: table;
+    margin: 0 auto;
+}
+
+.information-timetable-content table:hover {
+    transform: none;
+}
+
+.information-timetable-content th {
+    font-size: 32px;
+}
+
+.information-timetable-content td {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 30px;
+    text-align: center;
+}
+
+.information-trip-info-wrapper {
+    background-color: #eee;
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.information-trip-info {
+    display: flex;
+    width: 80%;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.information-trip-info table {
+    width: 100%;
+    margin: 0 auto;
+    display: table;
+}
+
+.information-trip-info table:hover {
+    transform: none;
+}
+
+.information-trip-info table th {
+    font-size: 32px;
+}
+
+.information-trip-info table td {
+    font-size: 30px;
+}
+
+.information-trip-info table td, .information-trip-info table th {
+    text-align: center;
+}
+
+.information-trip-info button, .information-train-info-details button {
+    padding: 6px 16px;
+    border: 1px solid #e38d2d;
+    font-family: 'Barlow Condensed', sans-serif;
+    border-radius: 10px;
+    background-color: #fff;
+    color: #e38d2d;
+    transition: background 0.15s, color 0.15s;
+    cursor: pointer;
+}
+
+.information-trip-info button:hover, .information-train-info-details button:hover {
+    background-color: #e38d2d;
+    color: #fff;
+}
+
+.information-trip-info-menu > * {
+    font-size: 32px;
+    font-family: 'Barlow Condensed', sans-serif;
+    margin: 10px;
+}
+
+.information-train-info-wrapper {
+    padding-top: 100px;
+    padding-bottom: 50px;
+    display: flex;
+    width: 100%;
+    background-color: #eee;
+    height: 100vh;
+    justify-content: space-between;
+}
+
+.information-train-info-trips {
+    flex-basis: 50%;
+    overflow-y: scroll;
+    border: 1px solid #e38d2d;
+    background-color: #fff;
+}
+
+.information-train-info-trips > div {
+    border-top: 2px solid #e38d2d;
+}
+
+.information-train-info-trips table {
+    display: table;
+    margin: 32px auto;
+    font-size: 30px;
+}
+
+.information-train-info-trips table:hover {
+    transform: none;
+}
+
+.information-train-info-trips a {
+    font-family: 'Barlow Condensed', sans-serif;
+    margin: 16px;
+    font-size: 32px;
+}
+
+.information-train-info-trips-link-wrapper{
+    padding-top: 32px;
+}
+
+.information-train-info-details {
+    flex-basis: 30%;
+    align-self: center;
+    margin-left: 6%;
+    position: sticky;
+    font-size: 40px;
+    font-family: 'Barlow Condensed', sans-serif;
+    width: 100%;
+}
+
+.information-train-info-details-content > div {
+    display: flex;
+    justify-content: space-between;
+    margin: 24px 12px;
+}
+
+.information-train-info-details-content-image {
+    text-align: right;
+}
+
+.information-train-info-details-content-image img {
+    width: 70%;
+}
