@@ -5,6 +5,7 @@ import {
     useElements
 } from "@stripe/react-stripe-js";
 import './payment.css'
+import constApi from "../rest/ConstApi";
 
 export default function CheckoutForm({handleClick}) {
     const stripe = useStripe();
@@ -56,7 +57,7 @@ export default function CheckoutForm({handleClick}) {
         const {error} = await stripe.confirmPayment({
             elements,
             confirmParams: {
-                return_url: "http://localhost:3000/payment/done",
+                return_url: constApi.apiUrl + "/payment/done",
             },
         });
 
