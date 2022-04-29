@@ -7,7 +7,7 @@ import Login from "../../user/Login";
 const ReserveNowPage = ({history}) => {
     const [goAnonymously, setWantGoAnonymously] = useState(false);
     const [goLogin, setWantLogin] = useState(false);
-    const user = useUserData(goLogin);
+    const user = useUserData();
     const parsed = JSON.parse(sessionStorage.getItem(history.location.state));
     const route = parsed?.route;
 

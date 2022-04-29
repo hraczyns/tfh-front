@@ -1,10 +1,10 @@
 import {useMemo} from "react";
 import Cookies from 'js-cookie';
 
-export const useUserData = (dep) => {
+export const useUserData = () => {
     return useMemo(() => {
         const cookieHeaderPayloadValue = Cookies.get("cookieHeaderPayload");
-        if(!cookieHeaderPayloadValue){
+        if (!cookieHeaderPayloadValue) {
             return {
                 id: "",
                 name: "",
@@ -19,5 +19,5 @@ export const useUserData = (dep) => {
             surname: decoded?.surname,
             email: decoded?.email,
         }
-    },[dep]);
+    }, []);
 }
