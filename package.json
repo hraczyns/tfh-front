@@ -21,7 +21,11 @@
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^2.0.3",
     "use-force-update": "^1.0.7",
-    "web-vitals": "^1.1.2"
+    "web-vitals": "^1.1.2",
+    "@stripe/react-stripe-js": "^1.6.0",
+    "@stripe/stripe-js": "^1.21.1",
+    "prop-types": "^15.8.1",
+    "react-router-dom": "^5.2.0"
   },
   "resolutions": {
     "react-leaflet/@react-leaflet/core": "1.0.2"
@@ -42,11 +46,5 @@
     ">0.2%",
     "not dead",
     "not op_mini all"
-  ],
-  "devDependencies": {
-    "@stripe/react-stripe-js": "^1.6.0",
-    "@stripe/stripe-js": "^1.21.1",
-    "prop-types": "^15.8.1",
-    "react-router-dom": "^5.2.0"
-  }
+  ]
 }
