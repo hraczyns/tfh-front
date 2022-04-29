@@ -1,5 +1,5 @@
 const constApi = {
-    apiUrl: 'http://localhost:8080'
+    apiUrl: 'https://tfh-backend.herokuapp.com'
 }
 
 export default constApi;
